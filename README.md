@@ -7,16 +7,16 @@ Welcome to my Hyprland + Arch Linux dotfiles repository! This setup is designed 
 **Warning:** Before proceeding, please be aware that using these dotfiles may result in an unstable or non-functional system.  Ensure you have a backup of your current configuration and important data before running any scripts.
 
 1. Copy repository:
-`git clone https://github.com/yehorych13/dotfiles && cd dotfiles`
+<p>`git clone https://github.com/yehorych13/dotfiles && cd dotfiles`</p>
 
 2. Install all packages from `pkgs.txt`:
-I recommend using [yay](https://github.com/Jguer/yay) for this. (One day I will make an automatic script for this, but for now, do it manually)
+<p>I recommend using [yay](https://github.com/Jguer/yay) for this. (One day I will make an automatic script for this, but for now, do it manually)</p>
  
 3. Use the installation script: 
-Use the installation script to move your current configuration to a backup folder located in `~/.config` and create symlinks for these dotfiles.
-`chmod +x install.sh && ./install.sh`
+<p>Use the installation script to move your current configuration to a backup folder located in `~/.config` and create symlinks for these dotfiles.
+`chmod +x install.sh && ./install.sh`</p>
 4. Enable sddm manager:
-Run `sudo systemctl enable sddm` in your terminal, reboot you system and that's it!
+<p>Run `sudo systemctl enable sddm` in your terminal, reboot you system and that's it!</p>
 
 ## Keybindings
 |Description|Keybinding|                        
