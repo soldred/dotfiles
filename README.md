@@ -19,7 +19,7 @@ Use the installation script to move your current configuration to a backup folde
 Run `sudo systemctl enable sddm` in your terminal, reboot you system and that's it!
 
 ## Keybindings
-|||                        
+|Description|Keybinding|                        
 |----------------|-------------------------------|
 |Main mod        |`SUPER`                        |
 |Open terminal   |`SUPER + ENTER`            |
