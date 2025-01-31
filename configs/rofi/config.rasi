@@ -1,0 +1,14 @@
+/*** This is just a basic config file ***/
+
+configuration{
+	modi: "drun";
+	show-icons: true;
+	terminal: "kitty";
+	case-sensative: false;
+	drun-display-format: "{icon} {name}";
+	display-drun: " ";
+	font: "JetbrainsMonoNL Nerd Font Propo Regular 12";
+}
+
+@import "~/.config/rofi/theme"
+@import "~/.config/rofi/style"
