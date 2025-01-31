@@ -16,7 +16,11 @@ git clone https://github.com/yehorych13/dotfiles && cd dotfiles
 ```shell
 chmod +x install.sh && ./install.sh
 ```
-4. Run `sudo systemctl enable sddm` in your terminal, reboot you system and that's it!
+4. Enable SDDM reboot you system and that's it!
+```shell
+sudo systemctl enable sddm
+sudo reboot
+```
 
 ## Keybindings
 |Description|Keybinding|                        
