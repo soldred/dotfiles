@@ -40,8 +40,9 @@ sudo reboot
 |Toggle split|`SUPER + J`|
 |Resize window|`SUPER + SHIFT + up/down/left/right`|
 |Move window|`SUPER + LMB`|
-|Move window v2|`Mouse 4`|
+|Move window|`Mouse 5`|
 |Resize window|`SUPER + RMB`|
+|Resize window|`Mouse 4`|
 |Move focus|`SUPER + up/down/left/right`|
 |Switch between workspaces|`SUPER + 1..0`|
 |Move active window to workspace|`SUPER + 1..0`|
