@@ -505,5 +505,6 @@
   "theme.bar.buttons.radius": "0.6em",
   "theme.bar.buttons.innerRadiusMultiplier": "0.4",
   "notifications.showActionsOnHover": true,
-  "notifications.active_monitor": true
+  "notifications.active_monitor": true,
+  "menus.dashboard.powermenu.avatar.image": "/home/yehorych/.config/fastfetch/frieren-goth.png"
 }

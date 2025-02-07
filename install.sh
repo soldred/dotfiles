@@ -20,7 +20,9 @@ BASE_CONFIG_DIR="$HOME/.config"
 SCRIPTS_DIR="$PARENT_DIR/scripts"
 CONFIG_DIR="$PARENT_DIR/configs"
 WALLPAPERS_DIR="$PARENT_DIR/Wallpapers"
-DEST_WALLPAPERS_DIR="$HOME/Pictures/"
+DEST_WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
+THEMES_DIR="$PARENT_DIR/.themes"
+DEST_THEMES_DIR="$HOME/.themes"
 
 # Determine backup dir variable
 BACKUP_DIR="$HOME/.config/backup_$(date "+%Y-%m-%d_%H-%M-%S")"
@@ -56,32 +58,36 @@ for CONF in "$CONFIG_DIR"/*; do
     fi
 done
 
-if [ -f "$HOME/.zshrc" ]; then
-    # Create backup dir if it's needed
-    mkdir -p "$BACKUP_DIR"
-    echo "Found .zshrc file! Trying to backup..."
-    if mv "$HOME/.zshrc" "$BACKUP_DIR/" >/dev/null 2>&1; then
-        echo ".zshrc file backed up to $BACKUP_DIR"
-    else
-        echo "$ERROR Failed to back up .zshrc"
+# Back up ZSH config
+for file in "$HOME"/.zsh*; do
+    if [ -f "$file" ]; then
+        echo "Found $file file! Trying to backup..."
+        if mv "$file" "$BACKUP_DIR/" >/dev/null 2>&1; then
+            echo "$file file backed up to $BACKUP_DIR"
+        else
+            echo "$ERROR Failed to back up $file"
+        fi
     fi
-fi
+done
 
 # --- CREATING SYMLINKS ---
 for CONF in "$CONFIG_DIR"/*; do
     CONF_NAME="$(basename "$CONF")"
+    TARGET="$BASE_CONFIG_DIR/$CONF_NAME"
+
     if [ "$CONF_NAME" == "zsh" ]; then
-        if ln -snf "$CONFIG_DIR/$CONF_NAME/.zshrc" "$HOME/.zshrc" >/dev/null 2>&1; then
-            echo "Symlink for .zshrc created!"
+        # Створюємо симлінк для .zshenv
+        if ln -snf "$CONFIG_DIR/$CONF_NAME/.zshenv" "$HOME/.zshenv" >/dev/null 2>&1; then
+            echo "Symlink for .zshenv created!"
         else
-            echo "$ERROR Failed to create symlink for .zshrc"
+            echo "$ERROR Failed to create symlink for .zshenv"
         fi
+    fi
+
+    if ln -snf "$CONF" "$TARGET" >/dev/null 2>&1; then
+        echo "Symlink for $CONF_NAME created!"
     else
-        if ln -snf "$CONFIG_DIR/$CONF_NAME" "$BASE_CONFIG_DIR/$CONF_NAME" >/dev/null 2>&1; then
-            echo "Symlink for $CONF_NAME created!"
-        else
-            echo "$ERROR Failed to create symlink for $CONF_NAME"
-        fi
+        echo "$ERROR Failed to create symlink for $CONF_NAME"
     fi
 done
 
@@ -95,5 +101,17 @@ if [ -d "$WALLPAPERS_DIR" ]; then
     fi
 else
     echo "$ERROR Wallpapers directory not found!"
+fi
+
+# Copy themes to ~/.themes
+if [ -d "$THEMES_DIR" ]; then
+    mkdir -p "$DEST_THEMES_DIR"
+    if cp -r "$THEMES_DIR"/* "$DEST_THEMES_DIR/"; then
+        echo "Themes have been copied to $DEST_THEMES_DIR!"
+    else
+        echo "$ERROR Failed to copy themes!"
+    fi
+else
+    echo "$ERROR Themes directory not found!"
 fi
 

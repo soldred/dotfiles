@@ -1,3 +1,6 @@
+
+# PLEASE CHECK FULL LIST BEFORE INSTALLATION
+
 base-devel
 git
 curl
@@ -8,6 +11,7 @@ xdg-desktop-portal-gtk
 xdg-user-dirs
 xorg-xwayland
 xorg-xhost
+wl-clipboard
 gtk3
 gtk4
 polkit
@@ -50,6 +54,16 @@ grimblast
 gvfs
 gvfs-gphoto2
 nautilus
+waypaper
+zsh
+pavucontrol
+discord-canary
+gpu-screen-recorder
+fzf
+zoxide
+
+
+# For AMD GPU
 vulkan-icd-loader 
 vulkan-radeon
 
