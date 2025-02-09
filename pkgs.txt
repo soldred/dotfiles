@@ -61,6 +61,11 @@ discord-canary
 gpu-screen-recorder
 fzf
 zoxide
+gcc
+ripgrep
+fd
+unzip
+make
 
 
 # For AMD GPU
