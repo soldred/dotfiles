@@ -43,7 +43,7 @@
   "theme.bar.border.location": "none",
   "bar.launcher.autoDetectIcon": false,
   "theme.bar.location": "top",
-  "bar.autoHide": "fullscreen",
+  "bar.autoHide": "never",
   "bar.layouts": {
     "0": {
       "left": [
@@ -506,5 +506,6 @@
   "theme.bar.buttons.innerRadiusMultiplier": "0.4",
   "notifications.showActionsOnHover": true,
   "notifications.active_monitor": true,
-  "menus.dashboard.powermenu.avatar.image": "/home/yehorych/.config/fastfetch/frieren-goth.png"
+  "menus.dashboard.powermenu.avatar.image": "/home/yehorych/.config/fastfetch/frieren-goth.png",
+  "theme.font.style": "normal"
 }
