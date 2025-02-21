@@ -76,7 +76,6 @@ for CONF in "$CONFIG_DIR"/*; do
     TARGET="$BASE_CONFIG_DIR/$CONF_NAME"
 
     if [ "$CONF_NAME" == "zsh" ]; then
-        # Створюємо симлінк для .zshenv
         if ln -snf "$CONFIG_DIR/$CONF_NAME/.zshenv" "$HOME/.zshenv" >/dev/null 2>&1; then
             echo "Symlink for .zshenv created!"
         else
@@ -91,27 +90,51 @@ for CONF in "$CONFIG_DIR"/*; do
     fi
 done
 
-# Copy Wallpapers to ~/Pictures/Wallpapers
-if [ -d "$WALLPAPERS_DIR" ]; then
-    mkdir -p "$DEST_WALLPAPERS_DIR"
-    if cp -r "$WALLPAPERS_DIR"/* "$DEST_WALLPAPERS_DIR/"; then
-        echo "Wallpapers have been copied to $DEST_WALLPAPERS_DIR!"
-    else
-        echo "$ERROR Failed to copy wallpapers!"
-    fi
-else
-    echo "$ERROR Wallpapers directory not found!"
-fi
+# NOTE: This function moves the contents of ~/Pictures/Wallpapers and .themes into the $PARENT_DIR folder to later create symlinks.
+#       Why is this needed?
+#       The goal is to keep all configuration files in one place ($PARENT_DIR) and then create symlinks to the right locations.
+#       If you already have wallpapers and themes, they will be moved to $PARENT_DIR, and symlinks will be created.
+#       This way, nothing will change for the end user.
+#       If you don't want to move your wallpapers and themes, you can back them up to $BACKUP_DIR instead.
+#       Press 'y' or 'ENTER' to move your content to the dotfiles folder.
+#       Press any other key to back up your content.
 
-# Copy themes to ~/.themes
-if [ -d "$THEMES_DIR" ]; then
-    mkdir -p "$DEST_THEMES_DIR"
-    if cp -r "$THEMES_DIR"/* "$DEST_THEMES_DIR/"; then
-        echo "Themes have been copied to $DEST_THEMES_DIR!"
-    else
-        echo "$ERROR Failed to copy themes!"
+handle_existing_dir() {
+    local src_dir="$1"
+    local dest_dir="$2"
+    local name="$3"
+
+    if [ -L "$dest_dir" ]; then
+        rm "$dest_dir"
+        echo "Existing symlink for $name at $dest_dir has been removed."
+    elif [ -d "$dest_dir" ]; then
+        echo "$name directory already exists at $dest_dir."
+        read -p "Do you want to move its contents to $src_dir before replacing it? (Y/n): " choice
+        choice="${choice:-Y}"  # Default to 'Y' if user presses Enter
+
+        case "$choice" in
+            y|Y)
+                mkdir -p "$src_dir"
+                mv -n "$dest_dir"/* "$src_dir/" 2>/dev/null
+                echo "Contents of $dest_dir have been moved to $src_dir (existing files were skipped)."
+                ;;
+            *)
+                mkdir -p "$BACKUP_DIR"
+                mv "$dest_dir" "$BACKUP_DIR/"
+                echo "$name directory has been moved to $BACKUP_DIR."
+                ;;
+        esac
     fi
-else
-    echo "$ERROR Themes directory not found!"
-fi
+}
+
+handle_existing_dir "$WALLPAPERS_DIR" "$DEST_WALLPAPERS_DIR" "Wallpapers"
+handle_existing_dir "$THEMES_DIR" "$DEST_THEMES_DIR" "Themes"
+
+# Detele directory if it exists
+[ -d "$DEST_WALLPAPERS_DIR" ] && rm -rf "$DEST_WALLPAPERS_DIR"
+[ -d "$DEST_THEMES_DIR" ] && rm -rf "$DEST_THEMES_DIR"
+
+# Create symlinks
+ln -s "$WALLPAPERS_DIR" "$DEST_WALLPAPERS_DIR" && echo "Wallpapers have been symlinked to $DEST_WALLPAPERS_DIR!" || echo "$ERROR Failed to create symlink for wallpapers!"
+ln -s "$THEMES_DIR" "$DEST_THEMES_DIR" && echo "Themes have been symlinked to $DEST_THEMES_DIR!" || echo "$ERROR Failed to create symlink for themes!"
 
