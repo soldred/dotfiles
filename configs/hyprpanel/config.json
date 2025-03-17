@@ -119,7 +119,7 @@
   "theme.bar.transparent": true,
   "bar.network.label": true,
   "theme.bar.buttons.bluetooth.enableBorder": false,
-  "menus.dashboard.shortcuts.left.shortcut3.command": "discord-canary",
+  "menus.dashboard.shortcuts.left.shortcut3.command": "discord",
   "menus.dashboard.shortcuts.left.shortcut1.command": "brave",
   "menus.dashboard.shortcuts.left.shortcut2.icon": "",
   "menus.dashboard.shortcuts.left.shortcut2.command": "telegram-desktop",

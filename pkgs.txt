@@ -66,12 +66,17 @@ ripgrep
 fd
 unzip
 make
-
+sassc
+gtk-engine-murrine
+starship
 
 # For AMD GPU
 vulkan-icd-loader 
 vulkan-radeon
 
+# For development
+docker
+docker-compose
 
 # SDDM THEME
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)"
