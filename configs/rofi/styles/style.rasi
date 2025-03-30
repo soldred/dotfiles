@@ -40,6 +40,7 @@ inputbar {
 
 prompt {
     enabled:                     true;
+	margin:						 0px 0px 0px 12px;
     background-color:            inherit;
     text-color:                  inherit;
 }
@@ -50,8 +51,10 @@ textbox-prompt-colon {
     background-color:            inherit;
     text-color:                  inherit;
 }
+
 entry {
     enabled:                     true;
+	margin:                      0px 0px 0px 10px;
     background-color:            inherit;
     text-color:                  inherit;
     cursor:                      text;
