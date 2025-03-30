@@ -56,5 +56,9 @@ export VISUAL="nvim"
 # Shell integrations
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+# Initialise oh-my-posh
+if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
+	eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/config.json)"
+fi
 # Initialize Starship
-eval "$(starship init zsh)"
+# eval "$(starship init zsh)"
