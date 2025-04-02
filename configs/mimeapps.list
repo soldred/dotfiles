@@ -1,0 +1,30 @@
+[Default Applications]
+image/png=org.gnome.Loupe.desktop
+image/jpeg=org.gnome.Loupe.desktop
+image/gif=org.gnome.Loupe.desktop
+inode/directory=org.gnome.Nautilus.desktop
+video/mp4=mpv.desktop
+video/x-matroska=mpv.desktop
+video/webm=mpv.desktop
+video/avi=mpv.desktop
+video/mpeg=mpv.desktop
+text/plain=neovim.desktop
+application/json=neovim.desktop
+application/xml=neovim.desktop
+application/x-terminal=kitty.desktop
+
+[Added Associations]
+image/png=org.gnome.Loupe.desktop;
+image/jpeg=org.gnome.Loupe.desktop;
+image/gif=org.gnome.Loupe.desktop;
+inode/directory=org.gnome.Nautilus;
+video/mp4=mpv.desktop;
+video/x-matroska=mpv.desktop;
+video/webm=mpv.desktop;
+video/avi=mpv.desktop;
+video/mpeg=mpv.desktop;
+text/plain=neovim.desktop;
+application/json=neovim.desktop;
+application/xml=neovim.desktop;
+application/x-terminal=kitty.desktop;
+

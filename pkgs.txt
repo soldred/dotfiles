@@ -6,6 +6,8 @@ git
 curl
 wget
 hyprland
+hyprlock
+hypridle
 xdg-desktop-portal-hyprland
 xdg-desktop-portal-gtk
 xdg-user-dirs
@@ -23,7 +25,7 @@ pipewire-alsa
 wireplumber
 sof-firmware
 libdbusmenu-gtk3
-libdbusmenu-gtk4
+# libdbusmenu-gtk4
 qt5-wayland
 qt6-wayland
 qt5ct
@@ -51,6 +53,7 @@ loupe
 mpv
 btop
 grimblast
+grimshot
 gvfs
 gvfs-gphoto2
 nautilus
@@ -80,6 +83,9 @@ vulkan-radeon
 docker
 docker-compose
 github-cli
+
+# enable sddm
+sudo systemctl enable sddm
 
 # SDDM THEME
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/keyitdev/sddm-astronaut-theme/master/setup.sh)"

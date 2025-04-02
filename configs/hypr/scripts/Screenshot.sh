@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/bash
 
 outputDir="$HOME/Pictures/Screenshots/"
 outputFile="screenshot_$(date +%d-%m-%Y_%H-%M-%S).png"
@@ -7,32 +7,25 @@ mkdir -p "$outputDir"
 
 mode=${1:-area}
 
-case "$mode" in
-active)
-    command="grimblast copysave active $outputPath"
-    ;;
-output)
-    command="grimblast copysave output $outputPath"
-    ;;
-area)
-    command="grimblast copysave area $outputPath"
-    ;;
-*)
-    echo "Invalid option: $mode"
-    echo "Usage: $0 {active|output|area}"
-    exit 1
-    ;;
-esac
+# Modes availiable
+# active - Captures the currently active window
+# screen - Captures the entire screen. This includes all visible outputs
+# area - Allows manually selecting a rectangular region, and captures that
+# window - Allows manually selecting a rectangular region, and captures that
+# output - Captures the currently active output
+# anything - Allows manually selecting a single window (by clicking on it), an output (by clicking outside of all windows, e.g. on the status bar), or an area (by using click and drag).
 
-if eval "$command"; then
+if grimshot savecopy "$mode" "$outputPath"; then
     recentFile=$(find "$outputDir" -name 'screenshot_*.png' -printf '%T+ %p\n' | sort -r | head -n 1 | cut -d' ' -f2-)
-    notify-send "Grimblast" "Your screenshot has been saved." \
+    notify-send "Grimbshot" "Your screenshot has been saved." \
         -i video-x-generic \
-        -a "Grimblast" \
+        -a "Grimshot" \
         -t 7000 \
         -u normal \
         --action="scriptAction:-xdg-open $outputDir=Directory" \
         --action="scriptAction:-xdg-open $recentFile=View" \
-	--action="scriptAction:-gimp -n $recentFile=Edit "
+        --action="scriptAction:-gimp -n $recentFile=Edit "
+else
+    echo "Screenshot failed! Command output:"
+    grimshot savecopy "$mode" "$outputPath" 2>&1
 fi
-

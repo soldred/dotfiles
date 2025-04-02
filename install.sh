@@ -46,7 +46,7 @@ execute_script() {
 for CONF in "$CONFIG_DIR"/*; do
     CONF_NAME="$(basename "$CONF")"
 
-    if [ -d "$BASE_CONFIG_DIR/$CONF_NAME" ]; then
+    if [ -e "$BASE_CONFIG_DIR/$CONF_NAME" ]; then
         mkdir -p "$BACKUP_DIR"
         echo "Config for $CONF_NAME found! Trying to backup..."
 
