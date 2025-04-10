@@ -12,6 +12,7 @@ text/plain=neovim.desktop
 application/json=neovim.desktop
 application/xml=neovim.desktop
 application/x-terminal=kitty.desktop
+x-scheme-handler/figma=figma-linux.desktop
 
 [Added Associations]
 image/png=org.gnome.Loupe.desktop;

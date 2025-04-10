@@ -2,24 +2,28 @@
 
 # This script was made by https://github.com/yehorych13
 
+# Set colors for messages
+RESET="$(tput sgr0)"
+ERROR="$(tput setaf 196)"
+SUCCESS="$(tput setaf 46)"
+INFO="$(tput setaf 39)"
+WARNING="$(tput setaf 226)"
+
 # Check if running as root. If root, script will exit
 if [[ $EUID -eq 0 ]]; then
-    echo "This script should not be executed as root!"
+    echo "${ERROR}This script should not be executed as root!${RESET}"
     exit 1
 fi
 
 clear
 
 # Variables
-ERROR="$(tput setaf 196)[ERROR]${RESET}"
-
 PARENT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 cd "$PARENT_DIR"
 
 BASE_CONFIG_DIR="$HOME/.config"
 SCRIPTS_DIR="$PARENT_DIR/scripts"
 CONFIG_DIR="$PARENT_DIR/configs"
-WALLPAPERS_DIR="$PARENT_DIR/Wallpapers"
 DEST_WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
 THEMES_DIR="$PARENT_DIR/.themes"
 DEST_THEMES_DIR="$HOME/.themes"
@@ -35,10 +39,10 @@ execute_script() {
         if [ -x "$script_path" ]; then
             "$script_path"
         else
-            echo "$ERROR Failed to make '$script_path' executable!"
+            echo "${ERROR}Failed to make '$script_path' executable!${RESET}"
         fi
     else
-        echo "$ERROR Script '$script' not found in '$SCRIPTS_DIR'"
+        echo "${ERROR}Script '$script' not found in '$SCRIPTS_DIR'${RESET}"
     fi
 }
 
@@ -48,12 +52,12 @@ for CONF in "$CONFIG_DIR"/*; do
 
     if [ -e "$BASE_CONFIG_DIR/$CONF_NAME" ]; then
         mkdir -p "$BACKUP_DIR"
-        echo "Config for $CONF_NAME found! Trying to backup..."
+        echo "${INFO}Config for $CONF_NAME found! Trying to backup...${RESET}"
 
         if mv "$BASE_CONFIG_DIR/$CONF_NAME" "$BACKUP_DIR/" >/dev/null 2>&1; then
-            echo "Config for $CONF_NAME backed up to $BACKUP_DIR"
+            echo "${SUCCESS}Config for $CONF_NAME backed up to $BACKUP_DIR${RESET}"
         else
-            echo "$ERROR Failed to back up $CONF_NAME"
+            echo "${ERROR}Failed to back up $CONF_NAME${RESET}"
         fi
     fi
 done
@@ -61,11 +65,11 @@ done
 # Back up ZSH config
 for file in "$HOME"/.zsh*; do
     if [ -f "$file" ]; then
-        echo "Found $file file! Trying to backup..."
+        echo "${INFO}Found $file file! Trying to backup...${RESET}"
         if mv "$file" "$BACKUP_DIR/" >/dev/null 2>&1; then
-            echo "$file file backed up to $BACKUP_DIR"
+            echo "${SUCCESS}$file file backed up to $BACKUP_DIR${RESET}"
         else
-            echo "$ERROR Failed to back up $file"
+            echo "${ERROR}Failed to back up $file${RESET}"
         fi
     fi
 done
@@ -77,28 +81,57 @@ for CONF in "$CONFIG_DIR"/*; do
 
     if [ "$CONF_NAME" == "zsh" ]; then
         if ln -snf "$CONFIG_DIR/$CONF_NAME/.zshenv" "$HOME/.zshenv" >/dev/null 2>&1; then
-            echo "Symlink for .zshenv created!"
+            echo "${SUCCESS}Symlink for .zshenv created!${RESET}"
         else
-            echo "$ERROR Failed to create symlink for .zshenv"
+            echo "${ERROR}Failed to create symlink for .zshenv${RESET}"
         fi
     fi
 
     if ln -snf "$CONF" "$TARGET" >/dev/null 2>&1; then
-        echo "Symlink for $CONF_NAME created!"
+        echo "${SUCCESS}Symlink for $CONF_NAME created!${RESET}"
     else
-        echo "$ERROR Failed to create symlink for $CONF_NAME"
+        echo "${ERROR}Failed to create symlink for $CONF_NAME${RESET}"
     fi
 done
 
-# NOTE: This function moves the contents of ~/Pictures/Wallpapers and .themes into the $PARENT_DIR folder to later create symlinks.
-#       Why is this needed?
-#       The goal is to keep all configuration files in one place ($PARENT_DIR) and then create symlinks to the right locations.
-#       If you already have wallpapers and themes, they will be moved to $PARENT_DIR, and symlinks will be created.
-#       This way, nothing will change for the end user.
-#       If you don't want to move your wallpapers and themes, you can back them up to $BACKUP_DIR instead.
-#       Press 'y' or 'ENTER' to move your content to the dotfiles folder.
-#       Press any other key to back up your content.
+# Handle existing wallpapers directory by cloning the repository
+handle_existing_wallpapers_dir() {
+    if [ -d "$DEST_WALLPAPERS_DIR" ]; then
+        echo "${WARNING}$DEST_WALLPAPERS_DIR already exists. Merging with the repository...${RESET}"
 
+        # Create a backup of the existing wallpapers before removing
+        mv "$DEST_WALLPAPERS_DIR" "$BACKUP_DIR/wallpapers"
+        echo "${SUCCESS}Existing wallpapers have been moved to $BACKUP_DIR/wallpapers${RESET}"
+    fi
+
+    echo "${INFO}Cloning wallpapers repository into $DEST_WALLPAPERS_DIR...${RESET}"
+    git clone --depth 1 https://github.com/yehorych13/wallpapers "$DEST_WALLPAPERS_DIR"
+
+    # Check if there is a backup of the wallpapers
+    BACKUP_WALLPAPER_DIR="$BACKUP_DIR/wallpapers"
+
+    if [ -d "$BACKUP_WALLPAPER_DIR" ]; then
+        echo "${INFO}Merging existing wallpapers with the cloned repository...${RESET}"
+
+        # Merge the contents of the backup wallpapers into the cloned repository
+        cp -r "$BACKUP_WALLPAPER_DIR/"* "$DEST_WALLPAPERS_DIR" 2>/dev/null
+        echo "${SUCCESS}Old wallpapers merged with the repository.${RESET}"
+
+        # Remove the backup folder after merging
+        rm -rf "$BACKUP_WALLPAPER_DIR"
+        echo "${SUCCESS}Backup directory cleaned up.${RESET}"
+    fi
+
+    # Remove .git directory to prevent conflicts
+    rm -rf "$DEST_WALLPAPERS_DIR/.git"
+    echo "${INFO}.git directory removed to avoid conflicts.${RESET}"
+
+    echo "${SUCCESS}Wallpapers successfully cloned and merged.${RESET}"
+}
+
+handle_existing_wallpapers_dir
+
+# Handle existing themes directory
 handle_existing_dir() {
     local src_dir="$1"
     local dest_dir="$2"
@@ -106,35 +139,32 @@ handle_existing_dir() {
 
     if [ -L "$dest_dir" ]; then
         rm "$dest_dir"
-        echo "Existing symlink for $name at $dest_dir has been removed."
+        echo "${SUCCESS}Existing symlink for $name at $dest_dir has been removed.${RESET}"
     elif [ -d "$dest_dir" ]; then
-        echo "$name directory already exists at $dest_dir."
-        read -p "Do you want to move its contents to $src_dir before replacing it? (Y/n): " choice
+        echo "${WARNING}$name directory already exists at $dest_dir.${RESET}"
+        read -p "${INFO}Do you want to move its contents to $src_dir before replacing it? (Y/n): " choice
         choice="${choice:-Y}"  # Default to 'Y' if user presses Enter
 
         case "$choice" in
             y|Y)
                 mkdir -p "$src_dir"
                 mv -n "$dest_dir"/* "$src_dir/" 2>/dev/null
-                echo "Contents of $dest_dir have been moved to $src_dir (existing files were skipped)."
+                echo "${SUCCESS}Contents of $dest_dir have been moved to $src_dir (existing files were skipped).${RESET}"
                 ;;
             *)
                 mkdir -p "$BACKUP_DIR"
                 mv "$dest_dir" "$BACKUP_DIR/"
-                echo "$name directory has been moved to $BACKUP_DIR."
+                echo "${SUCCESS}$name directory has been moved to $BACKUP_DIR.${RESET}"
                 ;;
         esac
     fi
 }
 
-handle_existing_dir "$WALLPAPERS_DIR" "$DEST_WALLPAPERS_DIR" "Wallpapers"
 handle_existing_dir "$THEMES_DIR" "$DEST_THEMES_DIR" "Themes"
 
 # Detele directory if it exists
-[ -d "$DEST_WALLPAPERS_DIR" ] && rm -rf "$DEST_WALLPAPERS_DIR"
 [ -d "$DEST_THEMES_DIR" ] && rm -rf "$DEST_THEMES_DIR"
 
 # Create symlinks
-ln -s "$WALLPAPERS_DIR" "$DEST_WALLPAPERS_DIR" && echo "Wallpapers have been symlinked to $DEST_WALLPAPERS_DIR!" || echo "$ERROR Failed to create symlink for wallpapers!"
-ln -s "$THEMES_DIR" "$DEST_THEMES_DIR" && echo "Themes have been symlinked to $DEST_THEMES_DIR!" || echo "$ERROR Failed to create symlink for themes!"
+ln -s "$THEMES_DIR" "$DEST_THEMES_DIR" && echo "${SUCCESS}Themes have been symlinked to $DEST_THEMES_DIR!${RESET}" || echo "${ERROR}Failed to create symlink for themes!${RESET}"
 
