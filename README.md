@@ -41,6 +41,7 @@ After installation choose wallpaper via [waypaper](https://github.com/anufrievro
 |Main mod        |`SUPER`                        ||
 |Open terminal   |`SUPER + ENTER`            ||
 |Open file manager|`SUPER + E`||
+|Open browser|`SUPER + B`||
 |Open app menu|`SUPER + R`||
 |Open theme selector|`SUPER + ALT + T`||
 |Open animation selector|`SUPER + ALT + A`||
