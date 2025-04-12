@@ -16,7 +16,7 @@ git clone https://github.com/yehorych13/dotfiles && cd dotfiles
 chmod +x packages.sh && ./packages.sh
 ```
  
-3. Use the installation script to move your current configuration to a backup folder located in `~/.config/backup_{date}` and create symlinks for these dotfiles. This script will also clone wallpapers from my [repository](https://github.com/yehorych13/wallpapers)
+3. Use the installation script to move your current configuration to a backup folder located in `~/.config/backup_{date}` and create symlinks for these dotfiles. This script will also clone (if you want, you'll have a choice) wallpapers from my [repository](https://github.com/yehorych13/wallpapers)
 ```shell
 chmod +x install.sh && ./install.sh
 ```
@@ -34,6 +34,7 @@ sudo reboot
 
 6. I also recommend installing (sddm-astronaut-theme](https://github.com/Keyitdev/sddm-astronaut-theme)
 
+After installation choose wallpaper via [waypaper](https://github.com/anufrievroman/waypaper)
 ## Keybindings
 |Description|Keybinding|Alternative Keybinding                        
 |----------------|-------------------------------|-------------|
