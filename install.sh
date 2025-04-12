@@ -27,6 +27,8 @@ CONFIG_DIR="$PARENT_DIR/configs"
 DEST_WALLPAPERS_DIR="$HOME/Pictures/Wallpapers"
 THEMES_DIR="$PARENT_DIR/.themes"
 DEST_THEMES_DIR="$HOME/.themes"
+ICONS_DIR="$PARENT_DIR/.icons"
+DEST_ICONS_DIR="$HOME/.icons"
 
 # Determine backup dir variable
 BACKUP_DIR="$HOME/.config/backup_$(date "+%Y-%m-%d_%H-%M-%S")"
@@ -96,38 +98,50 @@ done
 
 # Handle existing wallpapers directory by cloning the repository
 handle_existing_wallpapers_dir() {
-    if [ -d "$DEST_WALLPAPERS_DIR" ]; then
-        echo "${WARNING}$DEST_WALLPAPERS_DIR already exists. Merging with the repository...${RESET}"
+    read -p "${INFO}Do you want to install Wallpapers? (Y/n): " choice
+    choice="${choice:-Y}"  # Default to 'Y' if user presses Enter
+    if [[ "$choice" =~ ^[Yy]$ ]]; then
+        if [ -d "$DEST_WALLPAPERS_DIR" ]; then
+            echo "${WARNING}$DEST_WALLPAPERS_DIR already exists. Merging with the repository...${RESET}"
 
-        # Create a backup of the existing wallpapers before removing
-        mv "$DEST_WALLPAPERS_DIR" "$BACKUP_DIR/wallpapers"
-        echo "${SUCCESS}Existing wallpapers have been moved to $BACKUP_DIR/wallpapers${RESET}"
+            # Create a backup of the existing wallpapers before removing
+            mv "$DEST_WALLPAPERS_DIR" "$BACKUP_DIR/wallpapers"
+            echo "${SUCCESS}Existing wallpapers have been moved to $BACKUP_DIR/wallpapers${RESET}"
+        fi
+
+        echo "${INFO}Cloning wallpapers repository into $DEST_WALLPAPERS_DIR...${RESET}"
+        git clone --depth 1 https://github.com/yehorych13/wallpapers "$DEST_WALLPAPERS_DIR"
+
+        # Check if there is a backup of the wallpapers
+        BACKUP_WALLPAPER_DIR="$BACKUP_DIR/wallpapers"
+
+        if [ -d "$BACKUP_WALLPAPER_DIR" ]; then
+            echo "${INFO}Merging existing wallpapers with the cloned repository...${RESET}"
+
+            # Merge the contents of the backup wallpapers into the cloned repository
+            cp -r "$BACKUP_WALLPAPER_DIR/"* "$DEST_WALLPAPERS_DIR" 2>/dev/null
+            echo "${SUCCESS}Old wallpapers merged with the repository.${RESET}"
+
+            # Remove the backup folder after merging
+            rm -rf "$BACKUP_WALLPAPER_DIR"
+            echo "${SUCCESS}Backup directory cleaned up.${RESET}"
+        fi
+
+        echo "${SUCCESS}Wallpapers successfully cloned and merged.${RESET}"
+
+        read -p "${INFO}Do you want to remove .git in Wallpapers? (Y/n): " choice
+        choice="${choice:-Y}"  # Default to 'Y' if user presses Enter
+        if [[ "$choice" =~ ^[Yy]$ ]]; then
+            rm -rf "$DEST_WALLPAPERS_DIR/.git"
+            echo "${INFO}.git directory removed to avoid conflicts.${RESET}"
+        else
+            echo "${INFO}.git directory not removed.${RESET}"
+        fi
+    else
+        echo "${INFO}Wallpapers installation skipped.${RESET}"
     fi
-
-    echo "${INFO}Cloning wallpapers repository into $DEST_WALLPAPERS_DIR...${RESET}"
-    git clone --depth 1 https://github.com/yehorych13/wallpapers "$DEST_WALLPAPERS_DIR"
-
-    # Check if there is a backup of the wallpapers
-    BACKUP_WALLPAPER_DIR="$BACKUP_DIR/wallpapers"
-
-    if [ -d "$BACKUP_WALLPAPER_DIR" ]; then
-        echo "${INFO}Merging existing wallpapers with the cloned repository...${RESET}"
-
-        # Merge the contents of the backup wallpapers into the cloned repository
-        cp -r "$BACKUP_WALLPAPER_DIR/"* "$DEST_WALLPAPERS_DIR" 2>/dev/null
-        echo "${SUCCESS}Old wallpapers merged with the repository.${RESET}"
-
-        # Remove the backup folder after merging
-        rm -rf "$BACKUP_WALLPAPER_DIR"
-        echo "${SUCCESS}Backup directory cleaned up.${RESET}"
-    fi
-
-    # Remove .git directory to prevent conflicts
-    rm -rf "$DEST_WALLPAPERS_DIR/.git"
-    echo "${INFO}.git directory removed to avoid conflicts.${RESET}"
-
-    echo "${SUCCESS}Wallpapers successfully cloned and merged.${RESET}"
 }
+
 
 handle_existing_wallpapers_dir
 
@@ -161,10 +175,13 @@ handle_existing_dir() {
 }
 
 handle_existing_dir "$THEMES_DIR" "$DEST_THEMES_DIR" "Themes"
+handle_existing_dir "$ICONS_DIR" "$DEST_ICONS_DIR" "Icons"
 
 # Detele directory if it exists
 [ -d "$DEST_THEMES_DIR" ] && rm -rf "$DEST_THEMES_DIR"
 
 # Create symlinks
-ln -s "$THEMES_DIR" "$DEST_THEMES_DIR" && echo "${SUCCESS}Themes have been symlinked to $DEST_THEMES_DIR!${RESET}" || echo "${ERROR}Failed to create symlink for themes!${RESET}"
+ln -snf "$THEMES_DIR" "$DEST_THEMES_DIR" && echo "${SUCCESS}Themes have been symlinked to $DEST_THEMES_DIR!${RESET}" || echo "${ERROR}Failed to create symlink for themes!${RESET}"
 
+# Create symlinks
+ln -snf "$ICONS_DIR" "$DEST_ICONS_DIR" && echo "${SUCCESS}Themes have been symlinked to $DEST_ICONS_DIR!${RESET}" || echo "${ERROR}Failed to create symlink for themes!${RESET}"

@@ -2265,7 +2265,7 @@ headerbar button:backdrop:checked:disabled:not(.suggested-action):not(.destructi
 headerbar entry {
   background-color: rgba(250, 244, 237, 0.04);
   color: #faf4ed;
-  border-radius: 9999px;
+  border-radius: 12px;
 }
 
 headerbar entry:disabled {
@@ -3427,26 +3427,24 @@ scrollbar {
 }
 
 scrollbar.top {
-  border-bottom: 1px solid rgba(250, 244, 237, 0.12);
+  border-bottom: 1px solid transparent;
 }
 
 scrollbar.bottom {
-  border-top: 1px solid rgba(250, 244, 237, 0.12);
+  border-top: 1px solid transparent;
 }
 
 scrollbar.left {
-  border-right: 1px solid rgba(250, 244, 237, 0.12);
+  border-right: 1px solid transparent;
 }
 
 scrollbar.right {
-  border-left: 1px solid rgba(250, 244, 237, 0.12);
+  border-left: 1px solid transparent;
 }
 
 scrollbar > range > trough {
-  border: none;
-  background: none;
-  padding: 0;
   outline: none;
+  background: none;
 }
 
 scrollbar > range > trough > slider {
@@ -3456,21 +3454,21 @@ scrollbar > range > trough > slider {
   border: 4px solid transparent;
   border-radius: 9999px;
   background-clip: padding-box;
-  background-color: rgba(250, 244, 237, 0.5);
   box-shadow: none;
   outline: none;
+  background-color: #232032;
 }
 
 scrollbar > range > trough > slider:hover {
-  background-color: rgba(250, 244, 237, 0.7);
+  background-color: #2b283e;
 }
 
 scrollbar > range > trough > slider:active {
-  background-color: #faf4ed;
+  background-color: #2b283e;
 }
 
 scrollbar > range > trough > slider:disabled {
-  background-color: rgba(250, 244, 237, 0.32);
+  background-color: #191724;
 }
 
 scrollbar > range.fine-tune > trough > slider {
@@ -3479,11 +3477,11 @@ scrollbar > range.fine-tune > trough > slider {
 }
 
 scrollbar > range.fine-tune.horizontal > trough > slider {
-  margin: 3px 0;
+  margin: 2px 0;
 }
 
 scrollbar > range.fine-tune.vertical > trough > slider {
-  margin: 0 3px;
+  margin: 0 2px;
 }
 
 scrollbar.overlay-indicator:not(.fine-tune) > range > trough > slider {
@@ -3498,14 +3496,14 @@ scrollbar.overlay-indicator:not(.dragging):not(.hovering) {
 scrollbar.overlay-indicator:not(.dragging):not(.hovering) > range > trough > slider {
   min-width: 4px;
   min-height: 4px;
-  margin: 0;
-  border: 1px solid rgba(52, 48, 75, 0.3);
+  margin: 2px;
+  border: none;
 }
 
 scrollbar.overlay-indicator:not(.dragging):not(.hovering) button {
   min-width: 4px;
   min-height: 4px;
-  margin: 0;
+  margin: 2px;
   border: 1px solid rgba(52, 48, 75, 0.3);
   border-radius: 9999px;
   background-color: rgba(250, 244, 237, 0.5);
@@ -3534,7 +3532,7 @@ scrollbar.overlay-indicator:not(.dragging):not(.hovering).vertical button {
 }
 
 scrollbar.overlay-indicator.dragging, scrollbar.overlay-indicator.hovering {
-  background-color: rgba(43, 40, 62, 0.9);
+  background-color: #191724;
 }
 
 scrollbar.horizontal > range > trough > slider {
@@ -4186,7 +4184,7 @@ stack scrolledwindow.frame viewport.frame list {
   border: none;
 }
 
-overshoot.top {
+scrolledwindow > overshoot.top {
   background-image: radial-gradient(farthest-side at top, alpha(currentColor, 0.12) 85%, alpha(currentColor, 0)), radial-gradient(farthest-side at top, alpha(currentColor, 0.05), alpha(currentColor, 0));
   background-size: 100% 3%, 100% 50%;
   background-repeat: no-repeat;
@@ -4196,7 +4194,7 @@ overshoot.top {
   box-shadow: none;
 }
 
-overshoot.bottom {
+scrolledwindow > overshoot.bottom {
   background-image: radial-gradient(farthest-side at bottom, alpha(currentColor, 0.12) 85%, alpha(currentColor, 0)), radial-gradient(farthest-side at bottom, alpha(currentColor, 0.05), alpha(currentColor, 0));
   background-size: 100% 3%, 100% 50%;
   background-repeat: no-repeat;
@@ -4206,7 +4204,7 @@ overshoot.bottom {
   box-shadow: none;
 }
 
-overshoot.left {
+scrolledwindow > overshoot.left {
   background-image: radial-gradient(farthest-side at left, alpha(currentColor, 0.12) 85%, alpha(currentColor, 0)), radial-gradient(farthest-side at left, alpha(currentColor, 0.05), alpha(currentColor, 0));
   background-size: 3% 100%, 50% 100%;
   background-repeat: no-repeat;
@@ -4216,7 +4214,7 @@ overshoot.left {
   box-shadow: none;
 }
 
-overshoot.right {
+scrolledwindow > overshoot.right {
   background-image: radial-gradient(farthest-side at right, alpha(currentColor, 0.12) 85%, alpha(currentColor, 0)), radial-gradient(farthest-side at right, alpha(currentColor, 0.05), alpha(currentColor, 0));
   background-size: 3% 100%, 50% 100%;
   background-repeat: no-repeat;
@@ -4226,9 +4224,46 @@ overshoot.right {
   box-shadow: none;
 }
 
-junction {
-  border: none;
+scrolledwindow.undershoot-top > undershoot.top {
+  border-radius: 0px 0px 0 0;
+  box-shadow: none;
+  background: linear-gradient(to bottom, alpha(rgba(25, 23, 36, 0.2), 0.75), transparent 4px);
+}
+
+scrolledwindow.undershoot-bottom > undershoot.bottom {
+  border-radius: 0 0 0px 0px;
+  box-shadow: none;
+  background: linear-gradient(to top, alpha(rgba(25, 23, 36, 0.2), 0.75), transparent 4px);
+}
+
+scrolledwindow.undershoot-start:dir(ltr) > undershoot.left {
+  border-radius: 0px 0 0 0px;
+  box-shadow: none;
+  background: linear-gradient(to right, alpha(rgba(25, 23, 36, 0.2), 0.75), transparent 4px);
+}
+
+scrolledwindow.undershoot-start:dir(rtl) > undershoot.right {
+  border-radius: 0 0px 0px 0;
+  box-shadow: none;
+  background: linear-gradient(to left, alpha(rgba(25, 23, 36, 0.2), 0.75), transparent 4px);
+}
+
+scrolledwindow.undershoot-end:dir(ltr) > undershoot.right {
+  border-radius: 0 0px 0px 0;
+  box-shadow: none;
+  background: linear-gradient(to left, alpha(rgba(25, 23, 36, 0.2), 0.75), transparent 4px);
+}
+
+scrolledwindow.undershoot-end:dir(rtl) > undershoot.left {
+  border-radius: 0px 0 0 0px;
+  box-shadow: none;
+  background: linear-gradient(to right, alpha(rgba(25, 23, 36, 0.2), 0.75), transparent 4px);
+}
+
+scrolledwindow > undershoot {
   background-image: none;
+  box-shadow: none;
+  border: none;
 }
 
 separator {
@@ -5013,7 +5048,7 @@ separator.sidebar.selection-mode, .selection-mode separator.sidebar {
 .navigation-sidebar > row {
   min-height: 24px;
   padding: 0 6px 0 6px;
-  margin: 1px;
+  margin: 0;
   border-radius: 9px;
 }
 
@@ -5060,6 +5095,18 @@ separator.sidebar.selection-mode, .selection-mode separator.sidebar {
 /****************
  * File chooser *
  ****************/
+#NautilusFileChooser gridview.view {
+  background-color: transparent;
+  margin: 10px 5px;
+  padding: 10px 5px;
+}
+
+#NautilusFileChooser columnview.view,
+row.activatable > cell {
+  background-color: transparent;
+  padding: 1px 10px;
+}
+
 filechooser paned > separator {
   background: rgba(250, 244, 237, 0.12);
 }
@@ -5767,14 +5814,25 @@ popover.entry-completion > contents {
   background-color: transparent;
 }
 
+.nautilus-window .nautilus-grid-view,
+.nautilus-window .nautilus-list-view {
+  /* @extend %content_style; */
+}
+
 .nautilus-window .nautilus-grid-view .view,
 .nautilus-window .nautilus-list-view .view {
   background-color: transparent;
 }
 
+.nautilus-window .nautilus-grid-view row.activatable > cell,
+.nautilus-window .nautilus-list-view row.activatable > cell {
+  padding: 0px;
+  margin: 0px;
+}
+
 .nautilus-window .nautilus-grid-view gridview.view {
-  margin: 6px;
-  padding: 6px;
+  margin: 10px 5px;
+  padding: 10px 5px;
 }
 
 .nautilus-window tabbar .box {
@@ -5834,7 +5892,7 @@ popover.entry-completion > contents {
   margin: 6px;
   border-style: none;
   border-radius: 9px;
-  background-color: #191724;
+  background-color: rgba(52, 48, 75, 0.95);
   color: #9ccfd8;
   box-shadow: 0 3px 2px -2px rgba(0, 0, 0, 0.05), 0 2px 3px -1px rgba(0, 0, 0, 0.06), 0 1px 4px 0 rgba(0, 0, 0, 0.05);
 }
@@ -7417,6 +7475,14 @@ notebook scrolledwindow treeview.treeview-spacing {
   background-color: #191724;
 }
 
+.account-switcher-row label {
+  color: #faf4ed;
+}
+
+.account-switcher-row label.dim-label {
+  color: rgba(250, 244, 237, 0.7);
+}
+
 avatar {
   border-radius: 9999px;
   font-weight: bold;
@@ -7706,6 +7772,11 @@ preferencespage > scrolledwindow > viewport > clamp > box {
   border-spacing: 24px;
 }
 
+preferencesgroup > box background-preview widget.sidebar,
+preferencesgroup > box widget.header-bar:not(.editable-area) {
+  background-color: #111019;
+}
+
 preferencesgroup > box,
 preferencesgroup > box .labels {
   border-spacing: 6px;
@@ -7809,6 +7880,37 @@ preferencesgroup > box button.accent-button.purple {
 
 preferencesgroup > box button.accent-button.slate {
   --accent-bg-color: var(--accent-slate);
+}
+
+preferencesgroup > box box > list.boxed-list-separate {
+  background-color: transparent;
+  border-radius: 12px;
+}
+
+preferencesgroup > box box > list.boxed-list-separate row {
+  color: #faf4ed;
+  background-color: rgba(250, 244, 237, 0.04);
+  border-radius: 12px 12px 0 0;
+  margin-top: 0px;
+  margin-bottom: 2px;
+}
+
+preferencesgroup > box box > list.boxed-list-separate row:first-child {
+  border-radius: 12px 12px 0 0;
+}
+
+preferencesgroup > box box > list.boxed-list-separate row:last-child {
+  border-radius: 0 0 12px 12px;
+  margin-bottom: 0;
+}
+
+preferencesgroup > box box > list.boxed-list-separate row + row {
+  margin-top: 2px;
+}
+
+preferencesgroup > box box > list.boxed-list-separate row:hover, preferencesgroup > box box > list.boxed-list-separate row:focus {
+  color: rgba(250, 244, 237, 0.7);
+  background-color: rgba(250, 244, 237, 0.04);
 }
 
 window.about .main-page > viewport > clamp > box {
@@ -7959,25 +8061,25 @@ overlay-split-view > shadow.down {
 .sidebar-pane .sidebar > scrolledwindow > scrollbar > range > trough > slider,
 .sidebar-pane toolbarview > scrolledwindow > scrollbar > range > trough > slider,
 .sidebar-pane navigation-view-page stack > scrolledwindow > scrollbar > range > trough > slider, placessidebar > scrolledwindow > scrollbar > range > trough > slider, .nautilus-window placessidebar scrollbar > range > trough > slider, leaflet.unfolded > box > scrolledwindow > scrollbar > range > trough > slider, leaflet.unfolded .contacts-contact-list > scrolledwindow > scrollbar > range > trough > slider, .sidebar-pane toolbarview > stack > box > widget > widget > scrolledwindow > scrollbar > range > trough > slider {
-  background-color: rgba(250, 244, 237, 0.5);
+  background-color: #232032;
 }
 
 .sidebar-pane .sidebar > scrolledwindow > scrollbar > range > trough > slider:hover,
 .sidebar-pane toolbarview > scrolledwindow > scrollbar > range > trough > slider:hover,
 .sidebar-pane navigation-view-page stack > scrolledwindow > scrollbar > range > trough > slider:hover, placessidebar > scrolledwindow > scrollbar > range > trough > slider:hover, .nautilus-window placessidebar scrollbar > range > trough > slider:hover, leaflet.unfolded > box > scrolledwindow > scrollbar > range > trough > slider:hover, leaflet.unfolded .contacts-contact-list > scrolledwindow > scrollbar > range > trough > slider:hover {
-  background-color: rgba(250, 244, 237, 0.7);
+  background-color: #2b283e;
 }
 
 .sidebar-pane .sidebar > scrolledwindow > scrollbar > range > trough > slider:active,
 .sidebar-pane toolbarview > scrolledwindow > scrollbar > range > trough > slider:active,
 .sidebar-pane navigation-view-page stack > scrolledwindow > scrollbar > range > trough > slider:active, placessidebar > scrolledwindow > scrollbar > range > trough > slider:active, .nautilus-window placessidebar scrollbar > range > trough > slider:active, leaflet.unfolded > box > scrolledwindow > scrollbar > range > trough > slider:active, leaflet.unfolded .contacts-contact-list > scrolledwindow > scrollbar > range > trough > slider:active {
-  background-color: #faf4ed;
+  background-color: #2b283e;
 }
 
 .sidebar-pane .sidebar > scrolledwindow > scrollbar > range > trough > slider:disabled,
 .sidebar-pane toolbarview > scrolledwindow > scrollbar > range > trough > slider:disabled,
 .sidebar-pane navigation-view-page stack > scrolledwindow > scrollbar > range > trough > slider:disabled, placessidebar > scrolledwindow > scrollbar > range > trough > slider:disabled, .nautilus-window placessidebar scrollbar > range > trough > slider:disabled, leaflet.unfolded > box > scrolledwindow > scrollbar > range > trough > slider:disabled, leaflet.unfolded .contacts-contact-list > scrolledwindow > scrollbar > range > trough > slider:disabled {
-  background-color: rgba(250, 244, 237, 0.32);
+  background-color: #191724;
 }
 
 .sidebar-pane .sidebar > scrolledwindow > scrollbar.overlay-indicator:not(.dragging):not(.hovering) button,

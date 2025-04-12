@@ -1288,7 +1288,7 @@ searchbar > revealer > box {
 .nemo-window .primary-toolbar button:not(.text-button), .titlebar button:not(.suggested-action):not(.destructive-action) {
   color: rgba(250, 244, 237, 0.7);
   background-color: rgba(250, 244, 237, 0.04);
-  border-radius: 9999px;
+  border-radius: 12px;
 }
 
 .nemo-window .primary-toolbar .linked > button:not(.text-button), .titlebar .linked > button:not(.suggested-action):not(.destructive-action) {
@@ -3631,27 +3631,32 @@ messagedialog .dialog-action-box .linked:not(.vertical) > button.destructive-act
 }
 
 .csd filechooser {
-  background-color: #34304b;
+  background-color: #191724;
   border-radius: 0 0 12px 12px;
 }
 
 filechooser .dialog-action-box {
-  border-top: 1px solid rgba(250, 244, 237, 0.12);
+  border-top: 1px solid transparent;
+}
+
+filechooser treeview.view header > button {
+  background-color: #111019;
 }
 
 filechooser #pathbarbox {
-  border-bottom: 1px solid rgba(250, 244, 237, 0.12);
-  background-color: #34304b;
+  background-color: #111019;
+  border-radius: 12px 12px 0 0;
+  margin: 0 4px;
 }
 
 filechooser stack.view {
   background-color: transparent;
-  padding: 4px;
+  padding: 0 4px;
 }
 
 filechooser stack.view scrolledwindow {
-  background-color: transparent;
-  border-radius: 0 0 12px 0;
+  background-color: #111019;
+  border-radius: 0 0 12px 12px;
 }
 
 filechooser stack.view scrolledwindow list {
@@ -3674,6 +3679,12 @@ filechooser stack.view frame > border {
 
 filechooser paned > separator {
   background: none;
+}
+
+filechooser paned box.vertical {
+  background-color: #111019;
+  border-radius: 12px;
+  margin: 0 6px 0 1px;
 }
 
 /***********
@@ -3739,7 +3750,7 @@ stacksidebar.sidebar row > label {
  * File chooser *
  ****************/
 placessidebar.sidebar {
-  margin: 6px;
+  margin: 0 0 0 4px;
   padding: 0;
 }
 
@@ -3761,7 +3772,8 @@ placessidebar.sidebar row {
 }
 
 placessidebar.sidebar row:hover, placessidebar.sidebar row:active {
-  background-color: rgba(250, 244, 237, 0.04);
+  /* background-color: if($variant == 'light', rgba($base, 0.4), $fill); */
+  background-color: alpha(currentColor, 0.08);
   color: #9ccfd8;
 }
 
@@ -3770,8 +3782,9 @@ placessidebar.sidebar row > revealer {
 }
 
 placessidebar.sidebar row:selected {
+  /* background-color: if($variant == 'light', rgba($base, 0.4), $fill); */
+  background-color: alpha(currentColor, 0.08);
   color: #9ccfd8;
-  background-color: rgba(250, 244, 237, 0.04);
   font-weight: 500;
 }
 
@@ -6389,11 +6402,13 @@ window.background.chromium treeview.view button {
 }
 
 window.background.chromium menu {
+  background-color: #232032;
   border-color: #3c3756;
 }
 
 window.background.chromium menu menuitem {
   border-radius: 0;
+  background-color: rgba(250, 244, 237, 0.04);
 }
 
 tooltip.background.chromium {

@@ -72,6 +72,7 @@ ui_packages=(
     qt6-wayland
     qt5ct
     qt6ct
+    kvantum
 )
 
 font_packages=(

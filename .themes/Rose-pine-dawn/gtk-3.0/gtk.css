@@ -1287,8 +1287,8 @@ searchbar > revealer > box {
  ***************/
 .nemo-window .primary-toolbar button:not(.text-button), .titlebar button:not(.suggested-action):not(.destructive-action) {
   color: rgba(25, 23, 36, 0.6);
-  background-color: rgba(250, 244, 237, 0.6);
-  border-radius: 9999px;
+  background-color: rgba(223, 218, 217, 0.6);
+  border-radius: 12px;
 }
 
 .nemo-window .primary-toolbar .linked > button:not(.text-button), .titlebar .linked > button:not(.suggested-action):not(.destructive-action) {
@@ -1310,7 +1310,7 @@ searchbar > revealer > box {
 }
 
 .nemo-window .primary-toolbar button:hover:not(.text-button), .titlebar button:hover:not(.suggested-action):not(.destructive-action) {
-  box-shadow: inset 0 0 0 9999px rgba(250, 244, 237, 0.8);
+  box-shadow: inset 0 0 0 9999px rgba(223, 218, 217, 0.8);
 }
 
 .nemo-window .primary-toolbar button:checked:not(.text-button), .titlebar button:checked:not(.suggested-action):not(.destructive-action) {
@@ -1991,7 +1991,7 @@ menu menuitem {
 
 menu menuitem:hover {
   transition: none;
-  background-color: #f4ede8;
+  background-color: #dfdad9;
   color: #56949f;
 }
 
@@ -3631,27 +3631,32 @@ messagedialog .dialog-action-box .linked:not(.vertical) > button.destructive-act
 }
 
 .csd filechooser {
-  background-color: #f4ede8;
+  background-color: #faf4ed;
   border-radius: 0 0 12px 12px;
 }
 
 filechooser .dialog-action-box {
-  border-top: 1px solid rgba(25, 23, 36, 0.12);
+  border-top: 1px solid transparent;
+}
+
+filechooser treeview.view header > button {
+  background-color: #f4ede8;
 }
 
 filechooser #pathbarbox {
-  border-bottom: 1px solid rgba(25, 23, 36, 0.12);
   background-color: #f4ede8;
+  border-radius: 12px 12px 0 0;
+  margin: 0 4px;
 }
 
 filechooser stack.view {
   background-color: transparent;
-  padding: 4px;
+  padding: 0 4px;
 }
 
 filechooser stack.view scrolledwindow {
-  background-color: transparent;
-  border-radius: 0 0 12px 0;
+  background-color: #f4ede8;
+  border-radius: 0 0 12px 12px;
 }
 
 filechooser stack.view scrolledwindow list {
@@ -3674,6 +3679,12 @@ filechooser stack.view frame > border {
 
 filechooser paned > separator {
   background: none;
+}
+
+filechooser paned box.vertical {
+  background-color: #f4ede8;
+  border-radius: 12px;
+  margin: 0 6px 0 1px;
 }
 
 /***********
@@ -3739,7 +3750,7 @@ stacksidebar.sidebar row > label {
  * File chooser *
  ****************/
 placessidebar.sidebar {
-  margin: 6px;
+  margin: 0 0 0 4px;
   padding: 0;
 }
 
@@ -3761,7 +3772,8 @@ placessidebar.sidebar row {
 }
 
 placessidebar.sidebar row:hover, placessidebar.sidebar row:active {
-  background-color: rgba(244, 237, 232, 0.4);
+  /* background-color: if($variant == 'light', rgba($base, 0.4), $fill); */
+  background-color: alpha(currentColor, 0.08);
   color: #56949f;
 }
 
@@ -3770,8 +3782,9 @@ placessidebar.sidebar row > revealer {
 }
 
 placessidebar.sidebar row:selected {
+  /* background-color: if($variant == 'light', rgba($base, 0.4), $fill); */
+  background-color: alpha(currentColor, 0.08);
   color: #56949f;
-  background-color: rgba(244, 237, 232, 0.4);
   font-weight: 500;
 }
 
@@ -6389,11 +6402,13 @@ window.background.chromium treeview.view button {
 }
 
 window.background.chromium menu {
+  background-color: #dfdad9;
   border-color: #e4c39d;
 }
 
 window.background.chromium menu menuitem {
   border-radius: 0;
+  background-color: #ada8c7;
 }
 
 tooltip.background.chromium {

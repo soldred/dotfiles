@@ -1,12 +1,12 @@
-[Desktop Entry]
 Type=X-GNOME-Metatheme
-Name=catppuccin-frappe-lavender-standard+default
+[Desktop Entry]
+Name=Catppuccin-Dark-Frappe
 Comment=An Flat Gtk+ theme based on Elegant Design
 Encoding=UTF-8
 
 [X-GNOME-Metatheme]
-GtkTheme=catppuccin-frappe-lavender-standard+default
-MetacityTheme=catppuccin-frappe-lavender-standard+default
+GtkTheme=Catppuccin-Dark-Frappe
+MetacityTheme=Catppuccin-Dark-Frappe
 IconTheme=Tela-circle-Dark
-CursorTheme=Frappé-cursors
+CursorTheme=Catppuccin-cursors
 ButtonLayout=close,minimize,maximize:menu
