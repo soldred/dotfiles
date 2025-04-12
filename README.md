@@ -32,7 +32,7 @@ sudo systemctl enable sddm
 sudo reboot
 ```
 
-6. I also recommend installing (sddm-astronaut-theme](https://github.com/Keyitdev/sddm-astronaut-theme)
+6. I also recommend installing [sddm-astronaut-theme](https://github.com/Keyitdev/sddm-astronaut-theme)
 
 After installation choose wallpaper via [waypaper](https://github.com/anufrievroman/waypaper)
 ## Keybindings
