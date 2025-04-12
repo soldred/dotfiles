@@ -1,6 +1,7 @@
 # Hyprland dotfiles
 
 Welcome to my Hyprland + Arch Linux dotfiles repository! This setup is designed for a minimal [Arch Linux](https://wiki.archlinux.org/title/Arch_Linux) install.
+<p>https://github.com/user-attachments/assets/02d4b42e-1440-4f0d-b65d-26c503ca034c</p>
 
 ## Installation
 
