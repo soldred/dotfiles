@@ -42,6 +42,7 @@ sudo reboot
 |Open file manager|`SUPER + E`||
 |Open app menu|`SUPER + R`||
 |Open theme selector|`SUPER + ALT + T`||
+|Open animation selector|`SUPER + ALT + A`||
 |Take a screenshot|`SUPER + SHIFT + S`||
 |Kill active process|`SUPER + Q`||
 |Kill active process anyway|`SUPER + SHIFT + Q`||
