@@ -11,7 +11,7 @@ Welcome to my Hyprland + Arch Linux dotfiles repository! This setup is designed 
 ```shell
 git clone https://github.com/yehorych13/dotfiles && cd dotfiles
 ```
-2. Install all packages using the `packages.sh` script. It will also install [yay](https://github.com/Jguer/yay) if it's not already installed.
+2. THIS SCRIPT IS NOT WORKING PROPERTLY AT THIS MOMENT, PLEASE INSTALL PACKAGES MANUALLY. Install all packages using the `packages.sh` script. It will also install [yay](https://github.com/Jguer/yay) if it's not already installed.
 ```shell
 chmod +x packages.sh && ./packages.sh
 ```
@@ -33,6 +33,8 @@ sudo reboot
 ```
 
 6. I also recommend installing [sddm-astronaut-theme](https://github.com/Keyitdev/sddm-astronaut-theme)
+
+7. If you wanna use my [kanata](https://github.com/jtroo/kanata) configuration which replaces caps with esc check out [this](https://github.com/jtroo/kanata/blob/main/docs/setup-linux.md)
 
 After installation choose wallpaper via [waypaper](https://github.com/anufrievroman/waypaper)
 ## Keybindings

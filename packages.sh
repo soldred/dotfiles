@@ -85,10 +85,6 @@ font_packages=(
 )
 
 dm_packages=(
-    sddm
-    qt6-svg
-    qt6-virtualkeyboard
-    qt6-multimedia-ffmpeg
 )
 
 apps_packages=(
@@ -117,13 +113,13 @@ apps_packages=(
 
 terminal_packages=(
     zsh
-    oh-my-posh
-    fzf
-    zoxide
     ripgrep
     fd
     make
     gcc
+    zoxide
+    eza
+    starship
 )
 
 gpu_packages=(

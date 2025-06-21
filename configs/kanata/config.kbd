@@ -1,0 +1,13 @@
+(defcfg process-unmapped-keys yes)
+
+(defsrc
+	caps
+)
+
+(defalias
+	esc esc
+)
+
+(deflayer base
+	@esc
+)
