@@ -198,14 +198,45 @@ main() {
 
     # Step 1: Install packages from official repositories
     if [ ${#final_repo_list[@]} -gt 0 ]; then
-        local title="Installing Official Packages (${#final_repo_list[@]})"
-        { sudo pacman -S --needed --noconfirm "${final_repo_list[@]}"; } 2>&1 | dialog --title "$title" --programbox "Starting pacman..." 20 100
+        local pkgs_to_install_repo=()
+        msg "Checking which official packages need to be installed..."
+        for pkg in "${final_repo_list[@]}"; do
+            if ! pacman -Q "$pkg" &> /dev/null; then
+                pkgs_to_install_repo+=("$pkg")
+            fi
+        done
+
+        if [ ${#pkgs_to_install_repo[@]} -gt 0 ]; then
+            local title="Installing Official Packages (${#pkgs_to_install_repo[@]})"
+            dialog --title "$title" --infobox "The following packages will be installed:\n\n${pkgs_to_install_repo[*]}" 10 70
+            sleep 4
+            { sudo pacman -S --needed --noconfirm "${pkgs_to_install_repo[@]}"; } 2>&1 | dialog --title "$title" --programbox "Starting pacman..." 20 100
+        else
+            dialog --title "Official Packages" --infobox "All required packages from official repositories are already installed. Skipping." 8 70
+            sleep 3
+        fi
     fi
 
     # Step 2: Install packages from AUR
     if [ ${#final_aur_list[@]} -gt 0 ]; then
-        local title="Installing AUR Packages (${#final_aur_list[@]}) with $AUR_HELPER"
-        { "$AUR_HELPER" -S --needed --noconfirm --answerdiff=None --answerclean=None "${final_aur_list[@]}"; } 2>&1 | dialog --title "$title" --programbox "Starting $AUR_HELPER..." 20 100
+        local pkgs_to_install_aur=()
+        msg "Checking which AUR packages need to be installed..."
+        # AUR helpers are smart, but this check provides consistent UI
+        for pkg in "${final_aur_list[@]}"; do
+            if ! pacman -Q "$pkg" &> /dev/null; then
+                pkgs_to_install_aur+=("$pkg")
+            fi
+        done
+
+        if [ ${#pkgs_to_install_aur[@]} -gt 0 ]; then
+            local title="Installing AUR Packages (${#pkgs_to_install_aur[@]}) with $AUR_HELPER"
+            dialog --title "$title" --infobox "The following packages will be installed from AUR:\n\n${pkgs_to_install_aur[*]}" 10 70
+            sleep 4
+            { "$AUR_HELPER" -S --needed --noconfirm --answerdiff=None --answerclean=None "${pkgs_to_install_aur[@]}"; } 2>&1 | dialog --title "$title" --programbox "Starting $AUR_HELPER..." 20 100
+        else
+            dialog --title "AUR Packages" --infobox "All required packages from AUR are already installed. Skipping." 8 70
+            sleep 3
+        fi
     fi
 
     # --- Post-installation Phase ---
