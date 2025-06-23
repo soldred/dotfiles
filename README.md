@@ -1,64 +1,121 @@
-# Hyprland dotfiles
+# Hyprland Dotfiles by @yehorych13
 
-Welcome to my Hyprland + Arch Linux dotfiles repository! This setup is designed for a minimal [Arch Linux](https://wiki.archlinux.org/title/Arch_Linux) install.
+Welcome to my personal Hyprland dotfiles repository! This setup is meticulously crafted for a minimal, fast, and aesthetically pleasing experience on Arch Linux.
+
 <p>https://github.com/user-attachments/assets/02d4b42e-1440-4f0d-b65d-26c503ca034c</p>
 
-## Installation
+## ✨ Features
 
-**Warning:** Before proceeding, please be aware that using these dotfiles may result in an unstable or non-functional system.  Ensure you have a backup of your current configuration and important data before running any scripts.
+*   **Modern & Minimal:** A clean and beautiful desktop environment powered by Hyprland.
+*   **Highly Scripted:** Automated installation and setup scripts to get you up and running quickly.
+*   **Modular & Customizable:** Easily tweak themes, animations, and settings to your liking.
+*   **Efficient Workflow:** Thoughtful keybindings and powerful tools like `zsh`, `rofi`, and `ags` to boost your productivity.
+*   **Complete Theming:** Cohesive look and feel across GTK, Qt, and terminal applications.
 
-1. Copy repository
-```shell
+## ⚙️ Core Components & Utilities
+
+This setup is built from a collection of powerful and lightweight components. Here's a breakdown of the key software used:
+
+| Category          | Component(s)                                   | Description                                                     |
+| ----------------- | ---------------------------------------------- | --------------------------------------------------------------- |
+| **Visual Core**   | `Hyprland`                                     | The heart of the desktop; a dynamic tiling Wayland compositor.  |
+|                   | `ags-hyprpanel-git`                            | The top status bar, built with [AGS](https://github.com/Aylur/ags) (A Gtk-based Shell). |
+|                   | `Rofi` (Wayland Fork)                          | Application launcher, run dialog, and window switcher.          |
+|                   | `hyprlock` & `hypridle`                        | Manages the lock screen and system idle states.                 |
+|                   | `swww`                                         | An efficient wallpaper daemon for Wayland, handles animations.  |
+|                   | `Waypaper`                                     | A GUI frontend for selecting wallpapers (uses `swww` backend).  |
+| **Applications**  | `Kitty`                                        | A fast, feature-rich, GPU-accelerated terminal emulator.        |
+|                   | `Nautilus`                                     | The default file manager (from GNOME).                          |
+|                   | `Neovim`                                       | The primary command-line text editor.                           |
+| **Utilities**     | `grimshot`                                     | Script for taking screenshots (uses `grim` and `slurp`).        |
+|                   | `Btop`                                         | A modern and interactive system resource monitor.               |
+|                   | `pavucontrol`                                  | A graphical mixer for managing audio devices and volume.        |
+|                   | `Polkit Gnome Agent`                           | Handles privilege escalation prompts for graphical apps.        |
+| **Shell**         | `Zsh` + `Starship`                             | The default shell and its highly customizable prompt.           |
+
+## 🚀 Installation
+
+**🛑 Important Warning:** These are my personal dotfiles. Running these scripts will **overwrite** your existing configurations. Always back up your important data and dotfiles before proceeding. I am not responsible for any data loss or system instability.
+
+### Step 1: Clone the Repository
+
+First, clone this repository to your local machine and navigate into the directory.
+
+```bash
 git clone https://github.com/yehorych13/dotfiles && cd dotfiles
 ```
-2. THIS SCRIPT IS NOT WORKING PROPERTLY AT THIS MOMENT, PLEASE INSTALL PACKAGES MANUALLY. Install all packages using the `packages.sh` script. It will also install [yay](https://github.com/Jguer/yay) if it's not already installed.
-```shell
-chmod +x packages.sh && ./packages.sh
-```
- 
-3. Use the installation script to move your current configuration to a backup folder located in `~/.config/backup_{date}` and create symlinks for these dotfiles. This script will also clone (if you want, you'll have a choice) wallpapers from my [repository](https://github.com/yehorych13/wallpapers)
-```shell
-chmod +x install.sh && ./install.sh
-```
 
-4. Set zsh as the default shell
-```
-chsh -s $(which zsh)
+### Step 2: Install Dependencies
+
+The `packages.sh` script will install all necessary packages from the official Arch repositories and the AUR. It will automatically detect and install `yay` or `paru` if you don't have an AUR helper.
+
+```bash
+chmod +x packages.sh
+./packages.sh
 ```
 
-5. Enable SDDM reboot you system and that's it!
-```shell
-sudo systemctl enable sddm
-sudo reboot
+### Step 3: Deploy Dotfiles
+
+The `install.sh` script will back up your current configuration files (to `~/.config/backup_YYYY-MM-DD`) and create symbolic links to the dotfiles in this repository. It will also ask if you want to clone my wallpaper collection.
+
+```bash
+chmod +x install.sh
+./install.sh
 ```
 
-6. I also recommend installing [sddm-astronaut-theme](https://github.com/Keyitdev/sddm-astronaut-theme)
+### Step 4: Final Setup
 
-7. If you wanna use my [kanata](https://github.com/jtroo/kanata) configuration which replaces caps with esc check out [this](https://github.com/jtroo/kanata/blob/main/docs/setup-linux.md)
+A few final steps are needed to complete the installation.
 
-After installation choose wallpaper via [waypaper](https://github.com/anufrievroman/waypaper)
-## Keybindings
-|Description|Keybinding|Alternative Keybinding                        
-|----------------|-------------------------------|-------------|
-|Main mod        |`SUPER`                        ||
-|Open terminal   |`SUPER + ENTER`            ||
-|Open file manager|`SUPER + E`||
-|Open browser|`SUPER + B`||
-|Open app menu|`SUPER + R`||
-|Open theme selector|`SUPER + ALT + T`||
-|Open animation selector|`SUPER + ALT + A`||
-|Take a screenshot|`SUPER + SHIFT + S`||
-|Kill active process|`SUPER + Q`||
-|Kill active process anyway|`SUPER + SHIFT + Q`||
-|Exit from hyprland|`SUPER + SHIFT + DELETE`||
-|Toggle floating mode|`SUPER + T`||
-|Toggle fullscreen mode|`SUPER + F`||
-|Pseudo|`SUPER + P`||
-|Toggle split|`SUPER + J`||
-|Resize window|`SUPER + SHIFT + up/down/left/right`||
-|Move window|`SUPER + LMB`|`Mouse 5`|
-|Resize window|`SUPER + RMB`|`Mouse 4`|
-|Move focus|`SUPER + up/down/left/right`|
-|Switch between workspaces|`SUPER + 1..0`|
-|Move active window to workspace|`SUPER + 1..0`|
-|Scratchpad(special workspace)|`SUPER + S`|
+1.  **Set Zsh as default shell:**
+    ```bash
+    chsh -s $(which zsh)
+    ```
+    *You will need to log out and log back in for this change to take effect.*
+
+2.  **Reboot:**
+    Once the scripts are finished, reboot your system to apply all changes and start your new Hyprland session.
+    ```bash
+    sudo reboot
+    ```
+
+## 🎨 Post-Installation & Customization
+
+*   **Display Manager (Login Screen):** If you chose SDDM during installation, it is highly recommended to install the [sddm-astronaut-theme](https://github.com/Keyitdev/sddm-astronaut-theme) to achieve a matching look.
+
+*   **Wallpapers:** After logging in, launch `waypaper` to select and set your wallpaper. You can open it via the application menu (`SUPER + R`).
+
+*   **Keyboard Remapping (Optional):** If you want to use my `kanata` configuration (which remaps `Caps Lock` to `Esc` on tap and `Ctrl` on hold), follow the setup guide [here](https://github.com/jtroo/kanata/blob/main/docs/setup-linux.md).
+
+## ⌨️ Keybindings
+
+This setup uses `SUPER` (Windows/Command key) as the main modifier.
+
+| Description                               | Keybinding                            | Alternative                               |
+| ----------------------------------------- | ------------------------------------- | ----------------------------------------- |
+| **Window & Workspace Management**         |                                       |                                           |
+| Kill active window                        | `SUPER + Q`                           |                                           |
+| Force-kill active window                  | `SUPER + SHIFT + Q`                   |                                           |
+| Toggle floating mode                      | `SUPER + T`                           |                                           |
+| Toggle fullscreen mode                    | `SUPER + F`                           |                                           |
+| Move focus                                | `SUPER + Arrow Keys`                  |                                           |
+| Switch between workspaces                 | `SUPER + 1..9, 0`                     |                                           |
+| Move active window to workspace           | `SUPER + SHIFT + 1..9, 0`             |                                           |
+| Toggle special workspace (scratchpad)     | `SUPER + S`                           |                                           |
+| **Applications & Utilities**              |                                       |                                           |
+| Open terminal (`kitty`)                   | `SUPER + ENTER`                       |                                           |
+| Open file manager (`nautilus`)            | `SUPER + E`                           |                                           |
+| Open browser (`firefox`)                  | `SUPER + B`                           |                                           |
+| Open application launcher (`rofi`)        | `SUPER + R`                           |                                           |
+| **System & Theming**                      |                                       |                                           |
+| Take a screenshot (interactive)           | `SUPER + SHIFT + S`                   |                                           |
+| Open theme selector                       | `SUPER + ALT + T`                     |                                           |
+| Open animation style selector             | `SUPER + ALT + A`                     |                                           |
+| Exit Hyprland session                     | `SUPER + SHIFT + DELETE`              |                                           |
+| **Mouse Bindings**                        |                                       |                                           |
+| Move window                               | `SUPER + Left Mouse Button`           | `Mouse Button 5` (if available)           |
+| Resize window                             | `SUPER + Right Mouse Button`          | `Mouse Button 4` (if available)           |
+
+---
+Enjoy your new setup! If you find any issues or have suggestions, feel free to open an issue.
+

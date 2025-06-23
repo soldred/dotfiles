@@ -24,7 +24,7 @@ if grimshot savecopy "$mode" "$outputPath"; then
         -u normal \
         --action="scriptAction:-xdg-open $outputDir=Directory" \
         --action="scriptAction:-xdg-open $recentFile=View" \
-        --action="scriptAction:-gimp -n $recentFile=Edit "
+        --action="scriptAction:-ksnip $recentFile=Edit "
 else
     echo "Screenshot failed! Command output:"
     grimshot savecopy "$mode" "$outputPath" 2>&1

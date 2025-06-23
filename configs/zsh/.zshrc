@@ -2,7 +2,19 @@ if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
 
-# Please install this packages: eza, fzf, zoxide, starship, bat
+# --- Zinit ---
+export ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+if [ ! -d "$ZINIT_HOME" ]; then
+    echo "💡 Installing Zinit plugin manager..."
+    mkdir -p "$(dirname "$ZINIT_HOME")" && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
+fi
+
+
+
+
+
+
+
 
 # --- CONFIGURATIONS ---
 
