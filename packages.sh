@@ -88,8 +88,9 @@ prepare_system() {
 # ---
 # PACKAGE DEFINITIONS (SEPARATED FOR RELIABILITY)
 # ---
-repo_packages=(base-devel git curl wget unzip less xdg-user-dirs polkit hyprland hyprlock hypridle xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xorg-xwayland xorg-xhost wl-clipboard polkit-gnome gnome-keyring pipewire pipewire-pulse pipewire-alsa wireplumber sof-firmware gtk3 gtk4 libdbusmenu-gtk3 gtk-engine-murrine sassc qt5-wayland qt6-wayland qt5ct qt6ct kvantum kvantum-qt5 ttf-jetbrains-mono-nerd ttf-ubuntu-nerd ttf-roboto noto-fonts noto-fonts-cjk noto-fonts-emoji nautilus gvfs gvfs-gphoto2 kitty neovim gimp ksnip loupe mpv btop rofi-wayland pavucontrol waypaper wf-recorder gpu-screen-recorder grimshot hyprpicker discord)
-aur_packages=(ags-hyprpanel-git python-pywal16 matugen better-control-git)
+repo_packages=(base-devel git curl wget unzip less xdg-user-dirs polkit hyprland hyprlock hypridle xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xorg-xwayland xorg-xhost wl-clipboard polkit-gnome gnome-keyring pipewire pipewire-pulse pipewire-alsa wireplumber sof-firmware gtk3 gtk4 libdbusmenu-gtk3 gtk-engine-murrine sassc qt5-wayland qt6-wayland qt5ct qt6ct kvantum kvantum-qt5 ttf-jetbrains-mono-nerd ttf-ubuntu-nerd ttf-roboto noto-fonts noto-fonts-cjk noto-fonts-emoji nautilus gvfs gvfs-gphoto2 kitty neovim gimp ksnip loupe mpv btop rofi-wayland pavucontrol wf-recorder discord)
+
+aur_packages=(ags-hyprpanel-git python-pywal16 matugen better-control-git waypaper gpu-screen-recorder grimshot hyprpicker)
 terminal_power_tools=(zsh ripgrep fd make gcc zoxide eza starship)
 dev_tools=(docker docker-compose github-cli)
 dm_packages_sddm=(sddm)
