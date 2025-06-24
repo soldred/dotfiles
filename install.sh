@@ -35,11 +35,11 @@ separator() { echo -e "${BLUE}--------------------------------------------------
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 CONFIGS_SRC_DIR="$SCRIPT_DIR/configs"
 THEMES_SRC_DIR="$SCRIPT_DIR/.themes"
-ICONS_SRC_DIR="$SCRIPT_DIR/.icons"
+# ICONS_SRC_DIR="$SCRIPT_DIR/.icons"
 
 CONFIGS_DEST_DIR="$HOME/.config"
 THEMES_DEST_DIR="$HOME/.themes"
-ICONS_DEST_DIR="$HOME/.icons"
+# ICONS_DEST_DIR="$HOME/.icons"
 WALLPAPERS_DEST_DIR="$HOME/Pictures/Wallpapers"
 
 BACKUP_DIR="$HOME/.config_backup_$(date "+%Y-%m-%d_%H-%M-%S")"
@@ -229,7 +229,7 @@ main() {
     local choices
     choices=$(dialog --separate-output --checklist "Select components to set up:" 15 70 3 \
             1 "Core Configs (Hyprland, Kitty, etc.)" on \
-            2 "Themes and Icons" on \
+            2 "Themes" on \
         3 "Wallpapers" on 2>&1 >/dev/tty)
 
     if [ -z "$choices" ]; then error_exit "No components selected. Exiting."; fi
@@ -243,7 +243,7 @@ main() {
             1) install_configs ;;
             2)
                 handle_asset_dir "$THEMES_SRC_DIR" "$THEMES_DEST_DIR" "Themes"
-                handle_asset_dir "$ICONS_SRC_DIR" "$ICONS_DEST_DIR" "Icons"
+                # handle_asset_dir "$ICONS_SRC_DIR" "$ICONS_DEST_DIR" "Icons"
                 ;;
             3) install_wallpapers ;;
         esac
