@@ -45,25 +45,22 @@ First, clone this repository to your local machine and navigate into the directo
 git clone https://github.com/yehorych13/dotfiles && cd dotfiles
 ```
 
-### Step 2: Install Dependencies
+### Step 2: Install the interactive Installer
 
-The `packages.sh` script will install all necessary packages from the official Arch repositories and the AUR. It will automatically detect and install `yay` or `paru` if you don't have an AUR helper.
+The `install.sh` script is now an all-in-one interactive installer. It will handle everything from system dependencies to dotfile deployment.
 
-```bash
-chmod +x packages.sh
-./packages.sh
-```
-
-### Step 3: Deploy Dotfiles
-
-The `install.sh` script will back up your current configuration files (to `~/.config/backup_YYYY-MM-DD`) and create symbolic links to the dotfiles in this repository. It will also ask if you want to clone my wallpaper collection.
-
+Simply make the script executable and run it:
 ```bash
 chmod +x install.sh
 ./install.sh
 ```
 
-### Step 4: Final Setup
+The script will guide you through the following process:
+1. **Package installation**: It will first ask if you want to run the system package installer (`install_packages.sh`). This is highly recommended for a fresh setup to install all necessary applications, drivers, and an AUR helper.
+
+2. **Dotfiles Deployment**: Next, it will prompt you to select which components to install (configs, themes, wallpapers). It will safely back up any of your existing configurations to `$HOME/.config_backup_$(date "+%Y-%m-%d_%H-%M-%S")` before creating symbolic links.
+
+### Step 3: Final Setup
 
 A few final steps are needed to complete the installation.
 

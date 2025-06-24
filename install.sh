@@ -22,9 +22,9 @@ fi
 msg() { echo -e "${BLUE}${BOLD}==>${RESET}${BOLD} ${1}${RESET}"; }
 warn() { echo -e "${YELLOW}${BOLD}==> WARNING:${RESET} ${1}"; }
 error_exit() {
-    echo -e "\n${RED}${BOLD}==> ERROR: Prerequisite Check Failed!${RESET}" >&2
+    echo -e "\n${RED}${BOLD}==> ERROR: Script Halted!${RESET}" >&2
     echo -e "${RED}${1}${RESET}" >&2
-    echo -e "\nPlease install the missing packages and run the script again." >&2
+    echo -e "\nPlease fix the issue and run the script again." >&2
     exit 1
 }
 separator() { echo -e "${BLUE}--------------------------------------------------${RESET}"; }
@@ -48,20 +48,50 @@ BACKUP_DIR="$HOME/.config_backup_$(date "+%Y-%m-%d_%H-%M-%S")"
 # CORE FUNCTIONS
 # ---
 
-# NEW: Function to check for required tools before running anything else
+# Function to ask the user if they want to run the package installer first.
+prompt_for_package_installation() {
+    local pkg_script_path="$SCRIPT_DIR/install_packages.sh"
+
+    if [ ! -f "$pkg_script_path" ]; then
+        # If the script doesn't exist, we don't even need to ask.
+        warn "'install_packages.sh' not found. Skipping package installation step."
+        sleep 2
+        return
+    fi
+
+    if dialog --yesno "Do you want to run the system package installer (install_packages.sh) first?\n\nThis is recommended for a new Arch Linux setup." 10 70; then
+        msg "Launching the package installer script..."
+        chmod +x "$pkg_script_path"
+        clear
+        # Execute the script. If it fails, error_exit will be triggered by the `set -e` or our own message.
+        "$pkg_script_path" || error_exit "The package installation script failed. Aborting dotfiles setup."
+
+        # After the script finishes, inform the user we are returning.
+        dialog --title "Package Installation Complete" --msgbox "Returning to the dotfiles installer..." 8 60
+        clear
+    else
+        clear
+        msg "Skipping package installation as requested."
+    fi
+}
+
+
+# Function to check for required tools before running anything else
 check_prerequisites() {
     separator
-    msg "Checking for required tools..."
+    msg "Checking for required tools for dotfiles installation..."
 
     local missing_pkg=false
     local instructions=""
 
+    # Git is needed for wallpapers
     if ! command -v git &> /dev/null; then
         missing_pkg=true
         instructions+="\n- 'git' is not installed. It is required to clone the wallpapers repository."
         instructions+="\n  To install it, run: ${BOLD}sudo pacman -S git${RESET}"
     fi
 
+    # Dialog is needed for the UI
     if ! command -v dialog &> /dev/null; then
         missing_pkg=true
         instructions+="\n\n- 'dialog' is not installed. It is required for the interactive menus."
@@ -69,10 +99,15 @@ check_prerequisites() {
     fi
 
     if [ "$missing_pkg" = true ]; then
-        error_exit "Some required tools are not installed:$instructions"
+        # Custom error message for this specific check
+        echo -e "\n${RED}${BOLD}==> ERROR: Prerequisite Check Failed!${RESET}" >&2
+        echo -e "${RED}Some required tools for this script are not installed:${RESET}" >&2
+        echo -e "${instructions}" >&2
+        echo -e "\nPlease install the missing packages and run the script again." >&2
+        exit 1
     fi
 
-    msg "All prerequisites are met. Proceeding..."
+    msg "All prerequisites for dotfiles installation are met. Proceeding..."
 }
 
 safe_symlink() {
@@ -103,6 +138,7 @@ install_configs() {
         safe_symlink "$config_source" "$config_dest"
     done
 
+    # Handle .zshenv separately as it goes in $HOME
     if [ -f "$CONFIGS_SRC_DIR/zsh/.zshenv" ]; then
         safe_symlink "$CONFIGS_SRC_DIR/zsh/.zshenv" "$HOME/.zshenv"
     fi
@@ -135,25 +171,29 @@ handle_asset_dir() {
             1)
                 msg "Merging your $asset_name with the new ones..."
                 local conflict_found=false
-                for item in "$dest_dir"/*; do
-                    local item_name=$(basename "$item")
-                    if [ -e "$src_dir/$item_name" ]; then
+                # Use find for more robust handling of filenames
+                find "$src_dir" -mindepth 1 -maxdepth 1 | while read -r item_path; do
+                    local item_name=$(basename "$item_path")
+                    if [ -e "$dest_dir/$item_name" ]; then
                         conflict_found=true
                         mkdir -p "$BACKUP_DIR/${asset_name}_conflicts"
                         warn "Conflict found for '$item_name'. Moving your version to backup."
-                        mv "$item" "$BACKUP_DIR/${asset_name}_conflicts/"
+                        mv "$dest_dir/$item_name" "$BACKUP_DIR/${asset_name}_conflicts/"
                     fi
                 done
 
-                cp -rT "$dest_dir" "$src_dir" 2>/dev/null || true
-                rm -rf "$dest_dir"
+                # Copy new items into the destination
+                cp -rT "$src_dir" "$dest_dir"
                 if $conflict_found; then
                     warn "Some of your $asset_name had name conflicts and were backed up."
                 fi
-                msg "Merge complete."
+                msg "Merge complete. Your '$dest_dir' now contains both sets of files."
+                # We don't symlink in merge mode, we just copy the new files in.
+                return
                 ;;
             2)
                 msg "Your old $asset_name will be moved to backup."
+                # The safe_symlink function will handle the backup.
                 ;;
             3)
                 msg "Skipping $asset_name installation."
@@ -179,17 +219,14 @@ install_wallpapers() {
     case $choice in
         1)
             msg "Merging wallpapers..."
-            local temp_wall_dir="/tmp/wallpapers_clone"
+            mkdir -p "$WALLPAPERS_DEST_DIR"
+            local temp_wall_dir="/tmp/wallpapers_clone_$$" # Use process ID for temp dir
             rm -rf "$temp_wall_dir"
             git clone --depth 1 https://github.com/yehorych13/wallpapers "$temp_wall_dir" || error_exit "Failed to clone wallpapers."
 
-            if [ -d "$WALLPAPERS_DEST_DIR" ]; then
-                cp -rn "$WALLPAPERS_DEST_DIR"/* "$temp_wall_dir/" 2>/dev/null || true
-                rm -rf "$WALLPAPERS_DEST_DIR"
-            fi
-
-            mkdir -p "$(dirname "$WALLPAPERS_DEST_DIR")"
-            mv "$temp_wall_dir" "$WALLPAPERS_DEST_DIR"
+            # Copy new wallpapers, -n (--no-clobber) prevents overwriting existing files
+            cp -r -n "$temp_wall_dir"/* "$WALLPAPERS_DEST_DIR/" 2>/dev/null || true
+            rm -rf "$temp_wall_dir"
             echo -e "${GREEN}Wallpapers merged successfully.${RESET}"
             ;;
         2)
@@ -221,10 +258,14 @@ install_wallpapers() {
 main() {
     if [[ $EUID -eq 0 ]]; then error_exit "This script should not be executed as root!"; fi
 
-    # Run prerequisite check at the very beginning
-    check_prerequisites
-
     cd "$SCRIPT_DIR"
+
+    ### NEW ###
+    # Ask the user if they want to run the package installer first.
+    prompt_for_package_installation
+
+    # Run prerequisite check for the dotfiles installer itself.
+    check_prerequisites
 
     local choices
     choices=$(dialog --separate-output --checklist "Select components to set up:" 15 70 3 \
@@ -255,4 +296,5 @@ main() {
     msg "Dotfiles setup finished!"
 }
 
+# Run the script
 main

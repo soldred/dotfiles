@@ -41,14 +41,15 @@
   "scalingPriority": "gdk",
   "theme.bar.border.location": "none",
   "bar.launcher.autoDetectIcon": false,
-  "theme.bar.location": "top",
+  "theme.bar.location": "bottom",
   "bar.autoHide": "fullscreen",
   "bar.layouts": {
     "0": {
       "left": [
         "dashboard",
         "workspaces",
-        "windowtitle"
+        "windowtitle",
+        "cava"
       ],
       "middle": [
         "media"
@@ -129,7 +130,7 @@
   "theme.bar.margin_top": "0.4em",
   "theme.bar.buttons.y_margins": "0.4em",
   "theme.bar.buttons.padding_x": "0.7rem",
-  "menus.media.displayTimeTooltip": false,
+  "menus.media.displayTimeTooltip": true,
   "menus.media.hideAuthor": false,
   "menus.media.hideAlbum": false,
   "theme.bar.buttons.monochrome": false,
@@ -510,7 +511,7 @@
   "theme.bar.buttons.modules.cava.icon": "#9ccfd8",
   "theme.bar.buttons.modules.cava.border": "#9ccfd8",
   "theme.bar.enableShadow": false,
-  "menus.media.displayTime": false,
+  "menus.media.displayTime": true,
   "wallpaper.enable": false,
   "theme.bar.buttons.modules.microphone.border": "#b8bb26",
   "theme.bar.buttons.modules.microphone.background": "#282828",
@@ -519,5 +520,36 @@
   "theme.bar.buttons.modules.microphone.icon_background": "#282828",
   "bar.customModules.storage.paths": [
     "/"
+  ],
+  "bar.windowtitle.truncation_size": 50,
+  "bar.network.truncation_size": 7,
+  "theme.bar.buttons.clock.enableBorder": false,
+  "bar.clock.showIcon": true,
+  "bar.clock.showTime": true,
+  "bar.media.show_label": true,
+  "bar.media.truncation_size": 35,
+  "notifications.position": "bottom right",
+  "notifications.timeout": 6000,
+  "notifications.displayedTotal": 10,
+  "theme.bar.menus.menu.notifications.height": "60em",
+  "theme.osd.enableShadow": false,
+  "theme.osd.muted_zero": false,
+  "theme.bar.buttons.modules.netstat.enableBorder": false,
+  "bar.customModules.netstat.dynamicIcon": false,
+  "bar.customModules.netstat.rateUnit": "auto",
+  "bar.customModules.netstat.labelType": "in",
+  "theme.bar.buttons.modules.kbLayout.enableBorder": false,
+  "bar.customModules.kbLayout.labelType": "code",
+  "bar.customModules.cava.autoSensitivity": true,
+  "bar.customModules.cava.stereo": false,
+  "bar.customModules.cava.showIcon": true,
+  "bar.customModules.cava.showActiveOnly": false,
+  "bar.customModules.cava.barCharacters": [
+    "▁",
+    "▂",
+    "▃",
+    "▅",
+    "▆",
+    "▇"
   ]
 }
