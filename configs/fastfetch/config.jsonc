@@ -11,6 +11,9 @@
     },
     "modules": [
         {
+            "type": "break",
+        },
+        {
             "type": "os",
             "key": " ",
             "keyColor": "33"

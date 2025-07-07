@@ -9,13 +9,6 @@ if [ ! -d "$ZINIT_HOME" ]; then
     mkdir -p "$(dirname "$ZINIT_HOME")" && git clone https://github.com/zdharma-continuum/zinit.git "$ZINIT_HOME"
 fi
 
-
-
-
-
-
-
-
 # --- CONFIGURATIONS ---
 
 # --- Zinit plugin manager ---
@@ -64,9 +57,9 @@ zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'eza --tree --color=always $
 
 if command -v eza &> /dev/null; then
     alias ls='eza --icons'
-    alias ll='eza -l --icons'
-    alias la='eza -la --icons'
-    alias llt='eza -lT --icons'
+    alias lsl='eza -l --icons'
+    alias lsa='eza -la --icons'
+    alias lslt='eza -lT --icons'
     alias wtf='eza -la --icons'
 fi
 
