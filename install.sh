@@ -251,6 +251,41 @@ install_wallpapers() {
     fi
 }
 
+# NEW FUNCTION: Set up Hyprland plugins using hyprpm
+setup_hyprland_plugins() {
+    separator
+    msg "Setting up Hyprland plugins with hyprpm..."
+
+    if ! command -v hyprpm &> /dev/null; then
+        warn "hyprpm command not found. Skipping Hyprland plugin setup."
+        warn "Please ensure 'hyprland-devel' or a package providing hyprpm is installed."
+        sleep 3
+        return
+    fi
+
+    # Update repositories
+    msg "Updating hyprpm repositories..."
+    hyprpm update || error_exit "Failed to update hyprpm repositories."
+
+    # Add plugin sources
+    msg "Adding plugin sources..."
+    hyprpm add https://github.com/KZDKM/Hyprspace || error_exit "Failed to add Hyprspace repository."
+    hyprpm add https://github.com/hyprwm/hyprland-plugins || error_exit "Failed to add official hyprland-plugins repository."
+    hyprpm add https://github.com/virtcode/hypr-dynamic-cursors || error_exit "Failer to add hypr-dynamic-cursors repository."
+
+    # Update again to fetch new plugins
+    msg "Updating hyprpm repositories again to fetch new plugins..."
+    hyprpm update || error_exit "Failed to update hyprpm after adding sources."
+
+    # Enable specific plugins
+    msg "Enabling plugins..."
+    hyprpm enable Hyprspace || error_exit "Failed to enable Hyprspace plugin."
+    hyprpm enable csgo-vulkan-fix || error_exit "Failed to enable csgo-vulkan-fix plugin."
+    hyprpm enable dynamic-cursors || error_exit "Faile to enable dynamic-cursor."
+
+    echo -e "${GREEN}Hyprland plugins set up successfully.${RESET}"
+}
+
 
 # ---
 # MAIN EXECUTION
@@ -260,12 +295,14 @@ main() {
 
     cd "$SCRIPT_DIR"
 
-    ### NEW ###
     # Ask the user if they want to run the package installer first.
     prompt_for_package_installation
 
     # Run prerequisite check for the dotfiles installer itself.
     check_prerequisites
+
+    # Set up Hyprland plugins before installing configs that might depend on them.
+    setup_hyprland_plugins
 
     local choices
     choices=$(dialog --separate-output --checklist "Select components to set up:" 15 70 3 \

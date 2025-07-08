@@ -88,9 +88,60 @@ prepare_system() {
 # ---
 # PACKAGE DEFINITIONS (SEPARATED FOR RELIABILITY)
 # ---
-repo_packages=(base-devel git curl wget unzip less xdg-user-dirs polkit hyprland hyprlock hypridle xdg-desktop-portal-hyprland xdg-desktop-portal-gtk xorg-xwayland xorg-xhost wl-clipboard polkit-gnome gnome-keyring pipewire pipewire-pulse pipewire-alsa wireplumber sof-firmware gtk3 gtk4 libdbusmenu-gtk3 gtk-engine-murrine sassc qt5-wayland qt6-wayland qt5ct qt6ct kvantum kvantum-qt5 ttf-jetbrains-mono-nerd ttf-ubuntu-nerd ttf-roboto noto-fonts noto-fonts-cjk noto-fonts-emoji nautilus gvfs gvfs-gphoto2 swww kitty neovim ksnip loupe mpv btop rofi-wayland pavucontrol wf-recorder discord)
 
-aur_packages=(ags-hyprpanel-git python-pywal16 matugen better-control-git waypaper gpu-screen-recorder grimshot hyprpicker)
+# Packages from Official Repositories
+repo_packages=(
+    # --- Core Build & System Tools ---
+    # base-devel & git are installed in prepare_system()
+    curl wget unzip less xdg-user-dirs polkit sassc cmake meson
+    upower syntax-highlighting
+
+    # --- System Maintenance ---
+    reflector pacman-contrib
+
+    # --- Hyprland & Wayland Core ---
+    hyprland hyprlock hypridle
+    xdg-desktop-portal-hyprland xdg-desktop-portal-gtk
+    xorg-xwayland xorg-xhost wl-clipboard
+
+    # --- Authentication & Sound ---
+    polkit-gnome gnome-keyring
+    pipewire pipewire-pulse pipewire-alsa wireplumber sof-firmware
+
+    # --- GTK Theming ---
+    gtk3 gtk4 libdbusmenu-gtk3 gtk-engine-murrine
+
+    # --- Qt Full Suite (for max compatibility) ---
+    qt5-wayland qt6-wayland qt5ct qt6ct kvantum
+    qt6-base qt6-svg qt6-declarative qt6-tools qt6-translations
+    qt6-5compat qt6-avif-image-plugin qt6-imageformats qt6-multimedia
+    qt6-positioning qt6-quicktimeline qt6-sensors qt6-virtualkeyboard
+
+    # --- Fonts (Official Repos) ---
+    ttf-jetbrains-mono-nerd ttf-ubuntu-nerd ttf-roboto
+    noto-fonts noto-fonts-cjk
+    ttf-readex-pro
+
+    # --- Applications & Utilities ---
+    swww kitty neovim ksnip loupe mpv btop
+    rofi-wayland pavucontrol wf-recorder discord
+    nm-connection-editor brightnessctl nautilus gvfs gvfs-gphoto2
+)
+
+# Packages from the Arch User Repository (AUR)
+aur_packages=(
+    # --- Hyprland & Wayland Extras ---
+    ags-hyprpanel-git python-pywal16 matugen better-control-git
+    waypaper gpu-screen-recorder grimshot hyprpicker
+    hyprland-qt-support hyprland-qtutils
+
+    # --- Fonts (AUR) ---
+    ttf-twemoji
+    ttf-gabarito-git
+    ttf-material-symbols-variable-git
+    ttf-rubik-vf
+)
+
 terminal_power_tools=(zsh less ripgrep fd make gcc zoxide eza starship fzf)
 dev_tools=(docker docker-compose github-cli)
 dm_packages_sddm=(sddm)
@@ -246,6 +297,10 @@ main() {
     msg "Running post-installation tasks..."
     separator
     if command -v xdg-user-dirs-update &> /dev/null; then msg "Creating standard user directories..."; xdg-user-dirs-update; fi
+    # After installing fonts, it's a good practice to rebuild the font cache
+    msg "Rebuilding font cache..."
+    fc-cache -fv
+
     if [ "$dev_tools_selected" = true ]; then
         msg "Configuring Docker..."; sudo systemctl enable --now docker.service; sudo usermod -aG docker "$USER"
         msg "User '$USER' has been added to the 'docker' group."; warn "You need to log out and log back in for this change to take effect."
