@@ -29,6 +29,47 @@ error_exit() {
 }
 separator() { echo -e "${BLUE}--------------------------------------------------${RESET}"; }
 
+# Helper function to safely add a hyprpm repository, ignoring "already installed" errors.
+safe_hyprpm_add() {
+    local repo_url="$1"
+    local repo_name
+    repo_name=$(basename "$repo_url")
+
+    msg "Ensuring plugin repository '$repo_name' is added..."
+    # Attempt to add the repo, capturing all output.
+    if ! output=$(hyprpm add "$repo_url" 2>&1); then
+        # The command failed. Let's check why.
+        if [[ "$output" == *"Repository already installed"* ]]; then
+            # This specific error is okay. We can ignore it and continue.
+            echo -e "${GREEN}✔ Repository '$repo_name' is already installed. Skipping.${RESET}"
+        else
+            # Any other error is a real problem.
+            error_exit "Failed to add repository '$repo_name'.\nError: $output"
+        fi
+    else
+        # The command succeeded.
+        echo -e "${GREEN}✔ Repository '$repo_name' added successfully.${RESET}"
+    fi
+}
+
+# Helper function to safely enable a hyprpm plugin, ignoring "already enabled" errors.
+safe_hyprpm_enable() {
+    local plugin_name="$1"
+
+    msg "Ensuring plugin '$plugin_name' is enabled..."
+    if ! output=$(hyprpm enable "$plugin_name" 2>&1); then
+        # Check for the specific "already enabled" error.
+        if [[ "$output" == *"already enabled"* ]]; then
+            echo -e "${GREEN}✔ Plugin '$plugin_name' is already enabled. Skipping.${RESET}"
+        else
+            error_exit "Failed to enable plugin '$plugin_name'.\nError: $output"
+        fi
+    else
+        echo -e "${GREEN}✔ Plugin '$plugin_name' enabled successfully.${RESET}"
+    fi
+}
+
+
 # ---
 # PATHS AND VARIABLES
 # ---
@@ -267,21 +308,21 @@ setup_hyprland_plugins() {
     msg "Updating hyprpm repositories..."
     hyprpm update || error_exit "Failed to update hyprpm repositories."
 
-    # Add plugin sources
+    # Add plugin sources using the safe helper function
     msg "Adding plugin sources..."
-    hyprpm add https://github.com/KZDKM/Hyprspace || error_exit "Failed to add Hyprspace repository."
-    hyprpm add https://github.com/hyprwm/hyprland-plugins || error_exit "Failed to add official hyprland-plugins repository."
-    hyprpm add https://github.com/virtcode/hypr-dynamic-cursors || error_exit "Failer to add hypr-dynamic-cursors repository."
+    safe_hyprpm_add "https://github.com/KZDKM/Hyprspace"
+    safe_hyprpm_add "https://github.com/hyprwm/hyprland-plugins"
+    safe_hyprpm_add "https://github.com/virtcode/hypr-dynamic-cursors"
 
     # Update again to fetch new plugins
     msg "Updating hyprpm repositories again to fetch new plugins..."
     hyprpm update || error_exit "Failed to update hyprpm after adding sources."
 
-    # Enable specific plugins
+    # Enable specific plugins using the safe helper function
     msg "Enabling plugins..."
-    hyprpm enable Hyprspace || error_exit "Failed to enable Hyprspace plugin."
-    hyprpm enable csgo-vulkan-fix || error_exit "Failed to enable csgo-vulkan-fix plugin."
-    hyprpm enable dynamic-cursors || error_exit "Faile to enable dynamic-cursor."
+    safe_hyprpm_enable "Hyprspace"
+    safe_hyprpm_enable "csgo-vulkan-fix"
+    safe_hyprpm_enable "dynamic-cursors"
 
     echo -e "${GREEN}Hyprland plugins set up successfully.${RESET}"
 }

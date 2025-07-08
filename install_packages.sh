@@ -96,6 +96,9 @@ repo_packages=(
     curl wget unzip less xdg-user-dirs polkit sassc cmake meson
     upower syntax-highlighting
 
+    # --- Gaming ---
+    mangohud
+
     # --- System Maintenance ---
     reflector pacman-contrib
 
