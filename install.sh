@@ -310,8 +310,8 @@ setup_hyprland_plugins() {
 
     # Add plugin sources using the safe helper function
     msg "Adding plugin sources..."
-    safe_hyprpm_add "https://github.com/KZDKM/Hyprspace"
-    safe_hyprpm_add "https://github.com/hyprwm/hyprland-plugins"
+    # safe_hyprpm_add "https://github.com/KZDKM/Hyprspace"
+    # safe_hyprpm_add "https://github.com/hyprwm/hyprland-plugins"
     safe_hyprpm_add "https://github.com/virtcode/hypr-dynamic-cursors"
 
     # Update again to fetch new plugins
@@ -320,8 +320,7 @@ setup_hyprland_plugins() {
 
     # Enable specific plugins using the safe helper function
     msg "Enabling plugins..."
-    safe_hyprpm_enable "Hyprspace"
-    safe_hyprpm_enable "csgo-vulkan-fix"
+    # safe_hyprpm_enable "Hyprspace"
     safe_hyprpm_enable "dynamic-cursors"
 
     echo -e "${GREEN}Hyprland plugins set up successfully.${RESET}"
