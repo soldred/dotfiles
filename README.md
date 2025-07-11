@@ -1,5 +1,3 @@
-# Hyprland Dotfiles by @yehorych13
-
 Welcome to my personal Hyprland dotfiles repository! This setup is meticulously crafted for a minimal, fast, and aesthetically pleasing experience on Arch Linux.
 
 <p>https://github.com/user-attachments/assets/02d4b42e-1440-4f0d-b65d-26c503ca034c</p>
