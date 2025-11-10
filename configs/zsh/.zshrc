@@ -1,3 +1,10 @@
+# Before using this config make sure you have install the following packages:
+# zsh git eza bat fzf zoxide starship neovim
+# --- For 'extract' function (optional) ---
+# Fedora: sudo dnf install unrar p7zip-plugins
+# Ubuntu: sudo apt install unrar p7zip-full
+# Arch:   sudo pacman -S unrar p7zip
+
 if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi
@@ -12,7 +19,6 @@ fi
 # --- CONFIGURATIONS ---
 
 # --- Zinit plugin manager ---
-# Source Zinit if it exists
 if [ -f "${ZINIT_HOME}/zinit.zsh" ]; then
     source "${ZINIT_HOME}/zinit.zsh"
 else
@@ -34,18 +40,24 @@ setopt hist_save_no_dups
 setopt hist_ignore_dups
 setopt hist_find_no_dups
 
-# --- Plugins ---
+# --- Plugins (Optimized) ---
 zinit light Aloxaf/fzf-tab
 zinit light zsh-users/zsh-completions
 zinit light zdharma-continuum/fast-syntax-highlighting
 zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-history-substring-search
+
 zinit snippet OMZP::sudo
-zinit snippet OMZP::archlinux
 zinit snippet OMZP::git
 
 # --- Completions ---
 autoload -Uz compinit
-compinit
+local zcompdump_path="$HOME/.config/zsh/.zcompdump"
+if [[ ! -f "$zcompdump_path" || "$zcompdump_path" -ot "$HOME/.config/zsh/.zshrc" ]]; then
+    compinit -i -d "$zcompdump_path"
+else
+    compinit -C -i -d "$zcompdump_path"
+fi
 
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
@@ -59,6 +71,7 @@ if command -v eza &> /dev/null; then
     alias ls='eza --icons'
     alias lsl='eza -l --icons'
     alias lsa='eza -la --icons'
+    alias lst='eza -T --icons'
     alias lslt='eza -lT --icons'
     alias wtf='eza -la --icons'
 fi
@@ -71,29 +84,86 @@ alias c='clear'
 alias vim='nvim'
 
 alias please='sudo'
-alias install='sudo pacman -S'
-alias sorry='sudo pacman -Rs'
-alias update='sudo pacman -Syu'
+# NOTE: I'm still distrohopping from time to time, so...
+if command -v dnf &> /dev/null; then
+    # Fedora
+    alias install='sudo dnf install'
+    alias sorry='sudo dnf remove'
+    alias update='sudo dnf upgrade --refresh -y'
+elif command -v apt &> /dev/null; then
+    # Ubuntu / Debian
+    alias install='sudo apt install'
+    alias sorry='sudo apt remove'
+    alias update='sudo apt update && sudo apt upgrade -y'
+elif command -v pacman &> /dev/null; then
+    # Arch Linux
+    alias install='sudo pacman -S'
+    alias sorry='sudo pacman -Rns'
+    alias update='sudo pacman -Syu'
+fi
+# alias install='sudo dnf install'
+# alias sorry='sudo dnf remove'
+# alias update='sudo dnf update --refresh -y'
 
-alias fuck='sudo !!'
+alias fuck='sudo $(fc -ln -1)'
 alias gtfo='exit'
 
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 
+alias zcfg="nvim ~/.config/zsh/.zshrc"
+alias zsrc="source ~/.config/zsh/.zshrc"
+
 # Function
 mkcd() { mkdir -p "$1" && cd "$1"; }
-bak() { cp "$1" "$1.bak"; }
+bak() { mv "$1" "$1.bak"; }
+unbak() { mv "$1.bak" "$1"; }
+
+extract() {
+    if [ -z "$1" ]; then
+        echo "Usage: extract <file>"
+        return 1
+    fi
+    if [ -f "$1" ]; then
+        case "$1" in
+            *.tar.bz2) tar xjf "$1" ;;
+            *.tar.gz)  tar xzf "$1" ;;
+            *.tar.xz)  tar xf "$1"  ;;
+            *.bz2)     bunzip2 "$1" ;;
+            *.gz)      gunzip "$1"  ;;
+            *.tar)     tar xf "$1"  ;;
+            *.tbz2)    tar xjf "$1" ;;
+            *.tgz)     tar xzf "$1" ;;
+            *.zip)     unzip "$1"   ;;
+            *.Z)       uncompress "$1" ;;
+            *.rar)     unrar x "$1" ;;
+            *.7z)      7z x "$1"    ;;
+            *)         echo "'$1' cannot be extracted via extract()" ;;
+        esac
+    else
+        echo "'$1' is not a valid file"
+    fi
+}
 
 # --- Shell Integrations ---
-if command -v fzf &> /dev/null; then eval "$(fzf --zsh)"; fi
-if command -v zoxide &> /dev/null; then eval "$(zoxide init --cmd cd zsh)"; fi
-if command -v starship &> /dev/null; then
-    eval "$(starship init zsh)"
-fi
-# if command -v oh-my-posh &> /dev/null; then
-#  if [ "$TERM_PROGRAM" != "Apple_Terminal" ]; then
-#   eval "$(oh-my-posh init zsh --config $HOME/.config/ohmyposh/config.json)"
-#  fi
-# fi
+local cache_dir="$HOME/.config/zsh/cache"
+mkdir -p "$cache_dir"
+
+cache_init_script() {
+    local cmd_name="$1"
+    local init_cmd="$2"
+    local cache_file="$cache_dir/${cmd_name}_init.zsh"
+    local cmd_path
+    if ! cmd_path="$(command -v "$cmd_name")"; then return 1; fi
+    if [[ ! -f "$cache_file" || "$cmd_path" -nt "$cache_file" ]]; then
+        eval "$init_cmd" > "$cache_file"
+    fi
+    source "$cache_file"
+}
+
+cache_init_script "starship" "starship init zsh"
+cache_init_script "zoxide" "zoxide init --cmd cd zsh"
+cache_init_script "fzf" "fzf --zsh"
+
+unset -f cache_init_script
