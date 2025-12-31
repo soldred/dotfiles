@@ -1,15 +1,23 @@
-/*** This is just a basic config file ***/
+@import "~/.cache/wal/colors-rofi-dark.rasi"
 
-configuration{
-	modi: "drun";
-	show-icons: true;
-	terminal: "kitty";
-	case-sensative: false;
-	drun-display-format: "{icon} {name}";
-	display-drun: " ";
-	// font: "JetbrainsMonoNL Nerd Font Propo Regular 12";
-	font: "Ubuntu Nerd Font Regular 12";
+* {
+    font: "JetBrainsMono Nerd Font 12";
 }
 
-@import "~/.config/rofi/theme"
-@import "~/.config/rofi/style"
+#window {
+    padding: 0;
+}
+
+#scrollbar {
+    width: 4px;
+    border: 0;
+    handle-width: 8px;
+    padding: 0;
+    handle-color: @active-background;
+}
+
+// element selected.normal{
+//     // background-color: transparent;
+//     color: @background;
+// }
+

@@ -1,6 +1,0 @@
-* {
-    background:     #FAF4EDFF; /* Base Background */
-    foreground:     #575279FF; /* Text Color */
-    selected:       #907AA9FF; /* Iris */
-}
-

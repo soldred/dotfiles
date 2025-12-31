@@ -5,6 +5,11 @@
 # Ubuntu: sudo apt install unrar p7zip-full
 # Arch:   sudo pacman -S unrar p7zip
 
+# I higly recomend you installing nvm (node version manager)
+if [ -f "/usr/share/nvm/init-nvm.sh" ]; then
+    source /usr/share/nvm/init-nvm.sh
+fi
+
 if [ -d "$HOME/.local/bin" ]; then
     export PATH="$HOME/.local/bin:$PATH"
 fi

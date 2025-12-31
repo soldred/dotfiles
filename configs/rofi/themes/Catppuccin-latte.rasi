@@ -1,6 +1,0 @@
-* {
-    background:     #EFF1F5FF; /* Base Background */
-    foreground:     #4C4F69FF; /* Text Color */
-    selected:       #7287FDFF; /* Lavender */
-}
-

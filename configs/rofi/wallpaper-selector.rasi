@@ -1,0 +1,67 @@
+@import "~/.config/rofi/config.rasi"
+
+* {
+    font: "JetBrainsMono Nerd Font 12";
+}
+
+window {
+    background-color: @background;
+    width: 75%;
+    padding: 1.5ch;
+    border: 0;
+}
+
+inputbar {
+    children: [ prompt, entry ];
+    background-color: @alternate-normal-background;
+    margin:  0 0 1ch 0;
+    padding: 20px;
+}
+
+prompt {
+    text-color: @active-background;
+}
+
+entry {
+    expand: true;
+    text-color: @foreground;
+    placeholder: "Search wallpaper";
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+}
+
+listview {
+    columns: 3;
+    lines: 2;
+    spacing: 20px;
+    padding: 20px;
+    flow: horizontal;
+    fixed-width: true;
+    fixed-height: true;
+    cycle: true;
+    scrollbar: true;
+}
+
+
+element {
+    orientation: vertical;
+    padding: 0px;
+    spacing: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+element-icon {
+    text-color:                  inherit;
+    size:                        30%;
+    cursor:                      inherit;
+}
+
+element-text {
+  vertical-align: 0.5;
+  horizontal-align: 0.5;
+  padding: 6px;
+  margin: 6px;
+}
